@@ -1,0 +1,32 @@
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../../core/router/app_navigator.dart';
+import '../../auth/login_route.dart';
+
+part 'item_repository.g.dart';
+
+@riverpod
+ItemRepository itemRepository(Ref ref) {
+  return ItemRepository(ref);
+}
+
+class ItemRepository {
+  final Ref _ref; // Refのみ保持
+
+  ItemRepository(this._ref);
+
+  Future<void> fetchItems() async {
+    try {
+      // ... API Request ...
+      // Simulating an error for demo purposes
+      await Future.delayed(const Duration(seconds: 1));
+      throw Exception('401 Unauthorized');
+    } catch (e) {
+      if (e.toString().contains('401')) {
+        // 【重要】ここで初めてNavigatorを取得する
+        // これにより初期化時の循環参照を防ぐ
+        _ref.read(appNavigatorProvider).navigateTo(const LoginRoute());
+      }
+    }
+  }
+}
