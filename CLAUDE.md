@@ -1,4 +1,4 @@
-# Cursor Rules for Flutter Project
+# Claude Code 開発ガイド
 
 ## 重要原則
 
@@ -19,17 +19,13 @@
 2. docs/common/architecture-principles.md（アーキテクチャ原則）
 3. docs/common/coding-conventions.md（コーディング規約）
 
-## Cursor固有の指示
+## Claude Code固有の指示
 
-- コード生成時は以下のコマンドを必ず実行すること：
-  ```bash
-  flutter analyze
-  flutter test
-  ```
-- 新しい機能を追加する際は、docs/implementation/how-to/add-feature.md の手順に従うこと
-- 画面遷移を追加する際は、docs/implementation/how-to/add-navigation.md の手順に従うこと
+- コード生成時は必ず `flutter analyze` を実行して確認すること
+- 新しいファイルを作成する際は、既存の命名規則に従うこと（docs/common/coding-conventions.md 参照）
 - ルート定義やRiverpod Providerを変更した場合は、コード生成を実行すること：
   ```bash
   flutter pub run build_runner build --delete-conflicting-outputs
   ```
-- コミットメッセージは日本語で生成すること（既存の.cursorrulesの内容を継承）
+- 新機能追加時は、docs/implementation/how-to/add-feature.md の手順に従うこと
+- 画面遷移追加時は、docs/implementation/how-to/add-navigation.md の手順に従うこと
