@@ -26,7 +26,7 @@ void main() {
     );
 
     // Keep the provider alive
-    container.listen(itemRepositoryProvider, (_, __) {});
+    container.listen(itemRepositoryProvider, (_, _) {});
 
     final repository = container.read(itemRepositoryProvider);
 
