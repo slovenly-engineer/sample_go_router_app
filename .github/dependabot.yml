@@ -1,0 +1,37 @@
+version: 2
+updates:
+  # Dart/Flutterパッケージの監視
+  - package-ecosystem: "pub"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    reviewers:
+      - "slovenly-engineer" # レビュアーを指定（GitHubユーザー名に置き換えてください）
+    assignees:
+      - "slovenly-engineer" # アサインを指定（GitHubユーザー名に置き換えてください）
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # GitHub Actionsの監視
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    reviewers:
+      - "slovenly-engineer" # レビュアーを指定（GitHubユーザー名に置き換えてください）
+    assignees:
+      - "slovenly-engineer" # アサインを指定（GitHubユーザー名に置き換えてください）
+    commit-message:
+      prefix: "chore"
+      include: "scope"
