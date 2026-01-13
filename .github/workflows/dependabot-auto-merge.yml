@@ -13,7 +13,6 @@ jobs:
       pull-requests: write
       checks: write
     outputs:
-      review_result: ${{ steps.run_codex.outputs.final-message }}
       should_merge: ${{ steps.check_review.outputs.should_merge }}
     steps:
       - name: Checkout code
@@ -46,39 +45,210 @@ jobs:
         run: flutter test || true
         continue-on-error: true
 
-      - name: Run Codex Review
-        id: run_codex
-        uses: openai/codex-action@v1
-        with:
-          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          prompt-file: .github/codex/prompts/dependabot-review.md
-          output-file: codex-review.md
-          safety-strategy: drop-sudo
-          sandbox: workspace-write
-          codex-args: '["--full-auto"]'
-
-      - name: Check review result
-        id: check_review
-        run: |
-          if grep -q "✅ このPRは安全にマージできます" codex-review.md; then
-            echo "should_merge=true" >> $GITHUB_OUTPUT
-          else
-            echo "should_merge=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Post Codex review comment
+      - name: Get PR details
+        id: pr_details
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs');
-            const reviewContent = fs.readFileSync('codex-review.md', 'utf8');
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+
+            const files = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+
+            const prInfo = {
+              title: pr.data.title,
+              body: pr.data.body || '',
+              author: pr.data.user.login,
+              base: pr.data.base.ref,
+              head: pr.data.head.ref,
+              changedFiles: files.data.length,
+              additions: pr.data.additions,
+              deletions: pr.data.deletions,
+              changedFilesList: files.data.map(f => f.filename).join('\n'),
+            };
+
+            return JSON.stringify(prInfo);
+
+      - name: Request Codex Cloud review
+        id: request_review
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Codex Cloudにレビューを依頼
+            const comment = await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: '@codex review',
+            });
+
+            console.log('Codex review requested. Comment ID:', comment.data.id);
+            core.setOutput('comment_id', comment.data.id.toString());
+            return comment.data.id.toString();
+
+      - name: Wait for Codex review
+        id: wait_review
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const maxWaitTime = 300000; // 5分
+            const pollInterval = 10000; // 10秒
+            const startTime = Date.now();
+            const prNumber = context.payload.pull_request.number;
+            const reviewRequestCommentId = parseInt('${{ steps.request_review.outputs.result }}');
+
+            console.log('Waiting for Codex review result...');
+            console.log('Review request comment ID:', reviewRequestCommentId);
+
+            while (Date.now() - startTime < maxWaitTime) {
+              // PRのコメントを取得
+              const comments = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                per_page: 100,
+                sort: 'created',
+                direction: 'desc',
+              });
+
+              // Codex Cloudのレビューコメントを探す（@codex reviewコメントより後のコメント）
+              let reviewComment = null;
+
+              for (const comment of comments.data) {
+                // Codex Cloudのコメントを識別
+                // レビューリクエストコメントより後で、Codex関連のキーワードを含むコメント
+                if (comment.id > reviewRequestCommentId) {
+                  const body = comment.body.toLowerCase();
+                  if (comment.user.type === 'Bot' ||
+                      body.includes('codex') ||
+                      body.includes('レビュー') ||
+                      body.includes('review') ||
+                      body.includes('✅') ||
+                      body.includes('❌') ||
+                      body.includes('⚠️')) {
+                    reviewComment = comment;
+                    break;
+                  }
+                }
+              }
+
+              if (reviewComment) {
+                console.log('Codex review result found!');
+                console.log('Review comment ID:', reviewComment.id);
+                console.log('Review author:', reviewComment.user.login);
+                return JSON.stringify({
+                  found: true,
+                  body: reviewComment.body,
+                  author: reviewComment.user.login,
+                });
+              }
+
+              // 待機
+              await new Promise(resolve => setTimeout(resolve, pollInterval));
+              console.log('Still waiting for review result...');
+            }
+
+            console.log('Timeout waiting for Codex review');
+            return JSON.stringify({
+              found: false,
+              body: 'Codex review result not found within timeout period',
+            });
+
+      - name: Check review result and create summary
+        id: check_review
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prDetailsJson = '${{ steps.pr_details.outputs.result }}';
+            const reviewResultJson = '${{ steps.wait_review.outputs.result }}';
+
+            const prDetails = JSON.parse(prDetailsJson);
+            const reviewResult = JSON.parse(reviewResultJson);
+
+            // レビュー結果からマージ可否を判定
+            let shouldMerge = false;
+            let mergeReason = '';
+
+            if (reviewResult.found) {
+              const reviewBody = reviewResult.body.toLowerCase();
+              if (reviewBody.includes('✅') ||
+                  reviewBody.includes('安全にマージ') ||
+                  reviewBody.includes('approve') ||
+                  reviewBody.includes('approved') ||
+                  reviewBody.includes('承認')) {
+                shouldMerge = true;
+                mergeReason = 'Codex Cloudのレビューで承認されました';
+              } else if (reviewBody.includes('❌') ||
+                         reviewBody.includes('マージすべきではありません') ||
+                         reviewBody.includes('reject') ||
+                         reviewBody.includes('rejected') ||
+                         reviewBody.includes('却下')) {
+                shouldMerge = false;
+                mergeReason = 'Codex Cloudのレビューで却下されました';
+              } else {
+                shouldMerge = false;
+                mergeReason = 'Codex Cloudのレビューで要確認と判定されました';
+              }
+            } else {
+              shouldMerge = false;
+              mergeReason = 'Codex Cloudのレビュー結果が取得できませんでした（タイムアウト）';
+            }
+
+            // サマリーコメントを作成
+            const reviewCommentSection = reviewResult.found
+              ? '### レビューコメント\n\n' + reviewResult.body + '\n\n**レビュアー:** ' + reviewResult.author
+              : '⚠️ レビュー結果が取得できませんでした（タイムアウト）';
+
+            const mergeStatus = shouldMerge
+              ? '✅ **このPRは安全にマージできます**'
+              : '❌ **このPRはマージできません**';
+
+            const mergeNote = shouldMerge
+              ? '\nこのPRは自動マージの対象です。'
+              : '\n手動レビューが必要です。';
+
+            const summary = '## 📋 PR詳細\n\n' +
+              '**タイトル:** ' + prDetails.title + '\n' +
+              '**作成者:** ' + prDetails.author + '\n' +
+              '**ベースブランチ:** ' + prDetails.base + ' ← **ヘッドブランチ:** ' + prDetails.head + '\n' +
+              '**変更ファイル数:** ' + prDetails.changedFiles + '\n' +
+              '**追加行数:** +' + prDetails.additions + '\n' +
+              '**削除行数:** -' + prDetails.deletions + '\n\n' +
+              '### 変更されたファイル\n' +
+              '```\n' +
+              prDetails.changedFilesList + '\n' +
+              '```\n\n' +
+              '---\n\n' +
+              '## 🔍 Codex Cloud レビュー結果\n\n' +
+              reviewCommentSection + '\n\n' +
+              '---\n\n' +
+              '## ✅ マージ可否判定\n\n' +
+              mergeStatus + '\n\n' +
+              '**理由:** ' + mergeReason + '\n' +
+              mergeNote;
+
+            // サマリーコメントを投稿
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.pull_request.number,
-              body: `## Codex レビュー結果\n\n${reviewContent}`,
+              body: summary,
             });
+
+            // 出力を設定
+            core.setOutput('should_merge', shouldMerge.toString());
+            return shouldMerge;
 
   auto-merge:
     runs-on: ubuntu-latest
