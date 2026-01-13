@@ -28,7 +28,7 @@ jobs:
 
       - name: Get PR details
         id: pr_details
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -60,7 +60,7 @@ jobs:
 
       - name: Request Codex Cloud review
         id: request_review
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -78,7 +78,7 @@ jobs:
 
       - name: Wait for Codex review
         id: wait_review
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -147,7 +147,7 @@ jobs:
 
       - name: Check review result and create summary
         id: check_review
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -240,7 +240,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Enable auto-merge
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
