@@ -118,9 +118,25 @@ flutter_local_notificationsパッケージを導入し、ローカルプッシ�
 
 ## 詳細設計
 
-### 1. pathToRoute関数（パスからルートへの変換ロジック）
+---
 
-**ファイル: `lib/core/router/route_resolver.dart`**
+> **⚠️ 設計変更に関する注記（2026-01-14）**
+>
+> 以下のセクション1「pathToRoute関数」およびセクション3「NotificationNavigationHandler」の設計は、**実装時に変更されました**。
+>
+> GoRouter 17.0.0で `routeInformationParser.parseRouteInformation` が `UnimplementedError` を投げるようになったため、`pathToRoute` 関数は廃止され、代わりに `AppNavigator.navigateToPath(String path)` メソッドを使用する設計に変更されています。
+>
+> 詳細は本ドキュメント末尾の「トラブルシューティング」セクションを参照してください。
+>
+> **現在の実装:**
+> - `route_resolver.dart` は作成されていません
+> - `NotificationNavigationHandler` は `AppNavigator.navigateToPath()` を直接呼び出します
+
+---
+
+### 1. ~~pathToRoute関数（パスからルートへの変換ロジック）~~ （廃止）
+
+**ファイル: `lib/core/router/route_resolver.dart`** ※廃止済み
 
 ```dart
 import 'package:go_router/go_router.dart';
@@ -314,9 +330,18 @@ await _plugin.initialize(
 - トップレベル関数または静的メソッドである必要がある
 - 別のisolateで実行されるため、Riverpod Providerへの直接アクセスは不可
 
-### 3. NotificationNavigationHandler（通知タップ時の画面遷移）
+### 3. ~~NotificationNavigationHandler（通知タップ時の画面遷移）~~ （設計変更済み）
 
 **ファイル: `lib/features/notifications/handlers/notification_navigation_handler.dart`**
+
+---
+
+> **⚠️ 以下は当初の設計です。実際の実装とは異なります。**
+
+---
+
+<details>
+<summary>当初の設計（クリックで展開）</summary>
 
 ```dart
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -378,6 +403,51 @@ class NotificationNavigationHandler {
 **テスト可能性:**
 - `GoRouter`と`AppNavigator`をモック化可能（コンストラクタで注入）
 - すべて公開メソッド（プライベートメソッドなし）
+
+</details>
+
+---
+
+**✅ 実際の実装:**
+
+```dart
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../../core/router/app_navigator.dart';
+
+part 'notification_navigation_handler.g.dart';
+
+@Riverpod(keepAlive: true)
+NotificationNavigationHandler notificationNavigationHandler(Ref ref) {
+  return NotificationNavigationHandler(
+    navigator: ref.watch(appNavigatorProvider),
+  );
+}
+
+class NotificationNavigationHandler {
+  final AppNavigator _navigator;
+
+  NotificationNavigationHandler({
+    required AppNavigator navigator,
+  }) : _navigator = navigator;
+
+  /// 通知タップ時の処理
+  /// NotificationServiceのinitializeでコールバックとして使用
+  void handleNotificationTapped(NotificationResponse response) {
+    final path = response.payload;
+    if (path == null || path.isEmpty) return;
+
+    // パス文字列から直接遷移（GoRouterが有効なパスか検証）
+    _navigator.navigateToPath(path);
+  }
+}
+```
+
+**変更点:**
+- `GoRouter` への依存を削除（`AppNavigator` のみに依存）
+- `pathToRoute` 関数の使用を廃止
+- `AppNavigator.navigateToPath(path)` を直接呼び出し
+- 同期メソッドに変更（`Future<void>` → `void`）
 
 ### 4. main.dart 初期化フロー
 
