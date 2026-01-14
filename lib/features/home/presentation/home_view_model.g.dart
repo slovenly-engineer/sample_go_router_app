@@ -10,11 +10,11 @@ part of 'home_view_model.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(HomeViewModel)
-const homeViewModelProvider = HomeViewModelProvider._();
+final homeViewModelProvider = HomeViewModelProvider._();
 
 final class HomeViewModelProvider
     extends $NotifierProvider<HomeViewModel, void> {
-  const HomeViewModelProvider._()
+  HomeViewModelProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,7 +48,6 @@ abstract class _$HomeViewModel extends $Notifier<void> {
   @$mustCallSuper
   @override
   void runBuild() {
-    build();
     final ref = this.ref as $Ref<void, void>;
     final element =
         ref.element
@@ -58,6 +57,6 @@ abstract class _$HomeViewModel extends $Notifier<void> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, null);
+    element.handleCreate(ref, build);
   }
 }

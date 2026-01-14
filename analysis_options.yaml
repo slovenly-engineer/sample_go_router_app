@@ -10,6 +10,9 @@ analyzer:
     - "**/*.freezed.dart"
     - "build/**"
     - ".dart_tool/**"
+  # Enable custom_lint for riverpod_lint
+  plugins:
+    - custom_lint
 
 linter:
   rules:

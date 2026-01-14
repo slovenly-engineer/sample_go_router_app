@@ -62,6 +62,9 @@ jobs:
       - name: Run static analysis
         run: flutter analyze --fatal-infos --fatal-warnings
 
+      - name: Run Riverpod lint
+        run: dart run custom_lint
+
   test:
     name: Test & Coverage
     runs-on: ubuntu-latest
