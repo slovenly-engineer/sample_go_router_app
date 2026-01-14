@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/router/app_navigator.dart';
-import '../../items/item_route.dart';
+import '../../../core/router/router.dart';
 
 part 'home_view_model.g.dart';
 
