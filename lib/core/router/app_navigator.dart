@@ -30,6 +30,16 @@ class AppNavigator {
     }
   }
 
+  /// パス文字列を使用して画面遷移を実行
+  /// 通知タップなど、BuildContextが利用できない場合に使用
+  void navigateToPath(String path, {bool isModal = false}) {
+    if (isModal) {
+      _router.push(path);
+    } else {
+      _router.go(path);
+    }
+  }
+
   /// 戻る
   void pop<T extends Object?>([T? result]) {
     _router.pop(result);
