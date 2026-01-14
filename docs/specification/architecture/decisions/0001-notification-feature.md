@@ -1,7 +1,7 @@
 # ADR-0001: flutter_local_notifications 導入とプッシュ通知からの画面遷移機能
 
 作成日: 2026-01-13
-ステータス: 提案中
+ステータス: 承認済み（実装完了: 2026-01-14）
 
 ## 概要
 
@@ -90,7 +90,7 @@ flutter_local_notificationsパッケージを導入し、ローカルプッシ�
    - 通知テスト専用画面
    - 7つの個別ボタンを配置（各画面への通知を個別に送信可能）
 
-### 変更ファイル（4ファイル）
+### 変更ファイル（5ファイル）
 
 6. **`pubspec.yaml`**
    - `flutter_local_notifications: ^17.2.3` を追加
@@ -103,9 +103,18 @@ flutter_local_notificationsパッケージを導入し、ローカルプッシ�
 
 8. **`android/app/src/main/AndroidManifest.xml`**
    - `POST_NOTIFICATIONS` 権限追加（Android 13+対応）
+   - `VIBRATE` 権限追加
+   - `RECEIVE_BOOT_COMPLETED` 権限追加
+   - `ScheduledNotificationReceiver` レシーバー追加
+   - `ScheduledNotificationBootReceiver` レシーバー追加
 
-9. **`lib/features/home/presentation/home_page.dart`**
-   - 「Notification Test」ボタンを追加（NotificationTestPageへ遷移）
+9. **`ios/Runner/AppDelegate.swift`**
+   - `import flutter_local_notifications` 追加
+   - `FlutterLocalNotificationsPlugin.setPluginRegistrantCallback` 追加（バックグラウンド通知対応）
+   - `UNUserNotificationCenter.current().delegate = self` 追加（フォアグラウンド通知表示に必須）
+
+10. **`lib/features/home/presentation/home_page.dart`**
+    - 「Notification Test」ボタンを追加（NotificationTestPageへ遷移）
 
 ## 詳細設計
 
@@ -277,6 +286,33 @@ class NotificationService {
 - `FlutterLocalNotificationsPlugin`をモック化可能（コンストラクタで注入）
 - `NotificationNavigationHandler`をモック化可能（コンストラクタで注入）
 - すべて公開メソッド（プライベートメソッドなし）
+
+**バックグラウンド通知ハンドラー（将来の拡張）:**
+
+アプリがバックグラウンドまたは終了状態で通知をタップした場合に対応するため、トップレベル関数の追加が推奨されます：
+
+```dart
+// notification_service.dart のトップレベルに追加
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse response) {
+  // バックグラウンドでのタップ処理
+  // 注意: この関数は別のisolateで実行されるため、
+  // Providerへのアクセスは制限される
+  debugPrint('Background notification tapped: ${response.payload}');
+}
+
+// initialize() 内で登録
+await _plugin.initialize(
+  initSettings,
+  onDidReceiveNotificationResponse: _navigationHandler.handleNotificationTapped,
+  onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+);
+```
+
+**注意:**
+- `@pragma('vm:entry-point')` アノテーションが必須
+- トップレベル関数または静的メソッドである必要がある
+- 別のisolateで実行されるため、Riverpod Providerへの直接アクセスは不可
 
 ### 3. NotificationNavigationHandler（通知タップ時の画面遷移）
 
@@ -573,19 +609,72 @@ import '../notifications/notification_test_route.dart';
 ### Android
 
 **AndroidManifest.xml に追加:**
+
+1. **パーミッション**（`<manifest>` タグ直下）:
 ```xml
 <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+<uses-permission android:name="android.permission.VIBRATE"/>
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 ```
 
+2. **通知レシーバー**（`<application>` タグ内）:
+```xml
+<receiver android:exported="false"
+    android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+<receiver android:exported="false"
+    android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+        <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+        <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+        <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+    </intent-filter>
+</receiver>
+```
+
+**注意:** スケジュール通知を使用しない場合でも、レシーバーの登録は推奨されます。
+
 ### iOS
+
+**AppDelegate.swift の設定（必須）:**
+
+```swift
+import Flutter
+import UIKit
+import flutter_local_notifications
+
+@main
+@objc class AppDelegate: FlutterAppDelegate {
+  override func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -> Bool {
+    // バックグラウンド通知用コールバック登録
+    FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { (registry) in
+      GeneratedPluginRegistrant.register(with: registry)
+    }
+
+    // iOS 10以上でのデリゲート設定（フォアグラウンド通知表示に必須）
+    if #available(iOS 10.0, *) {
+      UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
+    }
+
+    GeneratedPluginRegistrant.register(with: self)
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+}
+```
+
+**重要:**
+- `import flutter_local_notifications` が必要
+- `UNUserNotificationCenter.current().delegate = self` がないと、**アプリがフォアグラウンドの時に通知が表示されない**
+- `FlutterLocalNotificationsPlugin.setPluginRegistrantCallback` がないと、バックグラウンドでの通知タップが正常に処理されない可能性がある
 
 **Info.plist（オプション）:**
 ```xml
 <key>NSUserNotificationsUsageDescription</key>
 <string>This app needs notification permissions to send you important updates.</string>
 ```
-
-**注意:** flutter_local_notificationsはiOSで自動的に権限をリクエストします。
 
 ## 実装順序
 
@@ -613,11 +702,12 @@ import '../notifications/notification_test_route.dart';
 ### Phase 3: アプリ統合
 9. `main.dart` 更新（初期化処理）
 10. `home_page.dart` 更新（NotificationTestPageへの遷移ボタン追加）
-11. `AndroidManifest.xml` 更新（権限追加）
+11. `AndroidManifest.xml` 更新（権限・レシーバー追加）
+12. `ios/Runner/AppDelegate.swift` 更新（デリゲート設定追加）
 
 ### Phase 4: 検証
-12. `flutter analyze` で静的解析
-13. Android/iOSエミュレータで動作確認
+13. `flutter analyze` で静的解析
+14. Android/iOSエミュレータで動作確認
     - 通知権限リクエストの確認
     - Home画面から「Notification Test」ボタンでテスト画面へ遷移
     - 各ボタンで個別に通知が送信されることを確認
@@ -682,6 +772,9 @@ import '../notifications/notification_test_route.dart';
 ### 検証項目
 - [ ] パッケージが正しくインストールされている
 - [ ] 通知サービスが初期化されている
+- [ ] **iOS: AppDelegate.swiftにデリゲート設定が追加されている**
+- [ ] **iOS: フォアグラウンドで通知が表示される**
+- [ ] **Android: AndroidManifest.xmlにレシーバーが登録されている**
 - [ ] Android/iOSで通知権限がリクエストされる
 - [ ] Home画面に「Notification Test」ボタンが表示される
 - [ ] 「Notification Test」ボタンでテスト画面へ遷移する
@@ -724,6 +817,80 @@ import '../notifications/notification_test_route.dart';
 ### 代替案4: core/notifications/に配置
 - 通知サービスをcore層に配置
 - **却下理由**: Feature-First原則に反する。通知は独立した機能であり、features配下が適切。
+
+## トラブルシューティング
+
+### 問題: GoRouter 17.0.0で通知タップ時に画面遷移が失敗する
+
+**症状**:
+```
+flutter: [WARNING] Failed to parse path: /login, error: UnimplementedError: Use parseRouteInformationWithDependencies instead
+flutter: [WARNING] Invalid path from notification: /login
+```
+
+**原因**:
+GoRouter 17.0.0で`routeInformationParser.parseRouteInformation`が非推奨になり、`UnimplementedError`を投げるようになった。新しい`parseRouteInformationWithDependencies`は`BuildContext`を必要とするが、通知タップのコールバック内では`BuildContext`が利用できない。
+
+**解決策**:
+`pathToRoute`関数を廃止し、`AppNavigator`に`navigateToPath`メソッドを追加。GoRouterの`go()`/`push()`メソッドはパス文字列を直接受け付けるため、`BuildContext`なしで動作する。
+
+**修正後の設計**:
+1. `AppNavigator.navigateToPath(String path)` - パス文字列から直接遷移
+2. `NotificationNavigationHandler` - `AppNavigator`のみに依存（`GoRouter`と`pathToRoute`への依存を削除）
+3. `route_resolver.dart` - 削除
+
+**教訓**:
+- GoRouterの内部API（`routeInformationParser`）に依存しない
+- GoRouterの公開API（`go()`/`push()`）を直接使用する
+- シンプルな設計を優先する
+
+### 問題: 通知タップ時のFilterPage画面に戻るボタンがない
+
+**症状**:
+Search画面からFilterPageに遷移した場合は戻るボタンがあるが、通知からFilterPageに遷移した場合は戻るボタンがない。
+
+**原因**:
+`FilterRoute`に2つのバグがあった：
+
+1. **継承元が間違い**: `ModalRoute`を継承していたが、本来は`HierarchyRoute`
+2. **ルート階層が間違い**: ルートレベル（`/filter`）に配置されていたが、本来はSearchRouteの子（`/search/filter`）
+
+FilterPageはSearch画面の子階層（Search → Filter）であり、`SettingsRoute`（MyPageRoute → Settings）と同様のパターンで定義すべきだった。
+
+**解決策**:
+
+1. `FilterRoute`の継承元を`ModalRoute`から`HierarchyRoute`に変更
+2. `filter_route.dart`を`part of router.dart`形式に変更
+3. `router.dart`で`SearchRoute`の子ルートとして定義
+
+```dart
+// router.dart
+TypedStatefulShellBranch(
+  routes: [
+    TypedGoRoute<SearchRoute>(
+      path: '/search',
+      routes: [TypedGoRoute<FilterRoute>(path: 'filter')],  // /search/filter
+    ),
+  ],
+),
+
+// filter_route.dart
+part of '../../core/router/router.dart';
+
+class FilterRoute extends HierarchyRoute with $FilterRoute {
+  const FilterRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const FilterPage();
+}
+```
+
+**修正後のパス**: `/filter` → `/search/filter`
+
+**教訓**:
+- 画面の階層構造をGoRouterのルート定義に正確に反映する
+- 親子関係のある画面は子ルートとして定義する（`SettingsRoute`パターン参照）
+- `part of router.dart`形式を使用すると、ルート階層が明確になる
 
 ## 参考資料
 
