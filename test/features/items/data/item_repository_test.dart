@@ -21,12 +21,12 @@ void main() {
     final mockNavigator = MockAppNavigator();
 
     // 2. ProviderContainerでモックを差し込み (Override)
-    final container = ProviderContainer(
-      overrides: [appNavigatorProvider.overrideWithValue(mockNavigator)],
-    );
-
-    // Keep the provider alive
-    container.listen(itemRepositoryProvider, (_, _) {});
+    final container =
+        ProviderContainer(
+            overrides: [appNavigatorProvider.overrideWithValue(mockNavigator)],
+          )
+          // Keep the provider alive
+          ..listen(itemRepositoryProvider, (_, __) {});
 
     final repository = container.read(itemRepositoryProvider);
 

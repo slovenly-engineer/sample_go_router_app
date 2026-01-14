@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart' hide ModalRoute;
 import 'package:go_router/go_router.dart';
 
-import '../../core/router/route_types.dart';
-import 'presentation/filter_page.dart';
+import 'package:sample_go_router_app/core/router/route_types.dart';
+import 'package:sample_go_router_app/features/search/presentation/filter_page.dart';
 
 part 'filter_route.g.dart';
 

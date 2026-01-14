@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
+import 'package:sample_go_router_app/core/router/route_types.dart'; // HierarchyRoute, ModalRoute
+import 'package:sample_go_router_app/core/router/scaffold_with_nav_bar.dart';
 // Import Root Routes
-import '../../features/auth/login_route.dart';
+import 'package:sample_go_router_app/features/auth/login_route.dart';
 // Import Pages (moved from part files)
-import '../../features/home/presentation/home_page.dart';
-import '../../features/items/item_route.dart';
-import '../../features/mypage/presentation/mypage_page.dart';
-import '../../features/mypage/presentation/settings_page.dart';
-import '../../features/search/filter_route.dart';
-import '../../features/search/presentation/search_page.dart';
-import 'route_types.dart'; // HierarchyRoute, ModalRoute
-import 'scaffold_with_nav_bar.dart';
+import 'package:sample_go_router_app/features/home/presentation/home_page.dart';
+import 'package:sample_go_router_app/features/items/item_route.dart';
+import 'package:sample_go_router_app/features/mypage/presentation/mypage_page.dart';
+import 'package:sample_go_router_app/features/mypage/presentation/settings_page.dart';
+import 'package:sample_go_router_app/features/search/filter_route.dart';
+import 'package:sample_go_router_app/features/search/presentation/search_page.dart';
 
 // Part files (Shell Routes)
 part '../../features/home/home_route.dart';

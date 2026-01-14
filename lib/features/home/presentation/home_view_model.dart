@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../core/router/app_navigator.dart';
-import '../../items/item_route.dart';
+import 'package:sample_go_router_app/core/router/app_navigator.dart';
+import 'package:sample_go_router_app/features/items/item_route.dart';
 
 part 'home_view_model.g.dart';
 

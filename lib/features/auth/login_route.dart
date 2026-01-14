@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/router/route_types.dart';
+import 'package:sample_go_router_app/core/router/route_types.dart';
 
 part 'login_route.g.dart';
 

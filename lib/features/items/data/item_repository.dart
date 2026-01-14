@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../core/router/app_navigator.dart';
-import '../../auth/login_route.dart';
+import 'package:sample_go_router_app/core/router/app_navigator.dart';
+import 'package:sample_go_router_app/features/auth/login_route.dart';
 
 part 'item_repository.g.dart';
 
@@ -11,17 +11,18 @@ ItemRepository itemRepository(Ref ref) {
 }
 
 class ItemRepository {
-  final Ref _ref; // Refのみ保持
+  // Refのみ保持
 
   ItemRepository(this._ref);
+  final Ref _ref;
 
   Future<void> fetchItems() async {
     try {
       // ... API Request ...
       // Simulating an error for demo purposes
-      await Future.delayed(const Duration(seconds: 1));
+      await Future<void>.delayed(const Duration(seconds: 1));
       throw Exception('401 Unauthorized');
-    } catch (e) {
+    } on Exception catch (e) {
       if (e.toString().contains('401')) {
         // 【重要】ここで初めてNavigatorを取得する
         // これにより初期化時の循環参照を防ぐ

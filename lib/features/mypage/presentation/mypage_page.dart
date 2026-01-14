@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/router/app_navigator.dart';
-import '../../../../core/router/router.dart'; // Import router for SettingsRoute
+import 'package:sample_go_router_app/core/router/app_navigator.dart';
+import 'package:sample_go_router_app/core/router/router.dart'; // Import router for SettingsRoute
 
 class MyPagePage extends ConsumerWidget {
   const MyPagePage({super.key});
