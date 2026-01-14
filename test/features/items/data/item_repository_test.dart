@@ -29,6 +29,8 @@ void main() {
     await repository.fetchItems();
 
     // 検証
-    verify(() => mockNavigator.navigateTo(any(that: isA<LoginRoute>()))).called(1);
+    verify(
+      () => mockNavigator.navigateTo(any(that: isA<LoginRoute>())),
+    ).called(1);
   });
 }

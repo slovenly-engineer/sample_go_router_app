@@ -27,9 +27,9 @@ class HomePage extends ConsumerWidget {
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
-                ref.read(appNavigatorProvider).navigateTo(
-                      const NotificationTestRoute(),
-                    );
+                ref
+                    .read(appNavigatorProvider)
+                    .navigateTo(const NotificationTestRoute());
               },
               icon: const Icon(Icons.notifications),
               label: const Text('Notification Test'),

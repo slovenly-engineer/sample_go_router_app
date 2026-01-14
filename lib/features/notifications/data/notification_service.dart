@@ -33,14 +33,16 @@ class NotificationService {
   NotificationService({
     required FlutterLocalNotificationsPlugin plugin,
     required NotificationNavigationHandler navigationHandler,
-  })  : _plugin = plugin,
-        _navigationHandler = navigationHandler;
+  }) : _plugin = plugin,
+       _navigationHandler = navigationHandler;
 
   /// 初期化
   /// initSettingsは内部で定義（固定値）
   /// 通知タップ時の処理はNotificationNavigationHandlerに委譲
   Future<void> initialize() async {
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -55,7 +57,8 @@ class NotificationService {
     // バックグラウンド/終了状態での通知タップはnotificationTapBackgroundで処理
     await _plugin.initialize(
       initSettings,
-      onDidReceiveNotificationResponse: _navigationHandler.handleNotificationTapped,
+      onDidReceiveNotificationResponse:
+          _navigationHandler.handleNotificationTapped,
       onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
     );
 
@@ -65,12 +68,9 @@ class NotificationService {
   Future<void> requestIOSPermissions() async {
     await _plugin
         .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
+          IOSFlutterLocalNotificationsPlugin
+        >()
+        ?.requestPermissions(alert: true, badge: true, sound: true);
   }
 
   /// 即座に通知表示（基本メソッド）
@@ -99,12 +99,6 @@ class NotificationService {
       iOS: iosDetails,
     );
 
-    await _plugin.show(
-      id,
-      title,
-      body,
-      notificationDetails,
-      payload: path,
-    );
+    await _plugin.show(id, title, body, notificationDetails, payload: path);
   }
 }

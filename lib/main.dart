@@ -11,12 +11,7 @@ void main() async {
   // NotificationServiceの初期化だけ（内部で完結）
   await container.read(notificationServiceProvider).initialize();
 
-  runApp(
-    UncontrolledProviderScope(
-      container: container,
-      child: const MyApp(),
-    ),
-  );
+  runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
 class MyApp extends ConsumerWidget {

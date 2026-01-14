@@ -14,9 +14,8 @@ NotificationNavigationHandler notificationNavigationHandler(Ref ref) {
 class NotificationNavigationHandler {
   final AppNavigator _navigator;
 
-  NotificationNavigationHandler({
-    required AppNavigator navigator,
-  }) : _navigator = navigator;
+  NotificationNavigationHandler({required AppNavigator navigator})
+    : _navigator = navigator;
 
   /// 通知タップ時の処理
   /// NotificationServiceのinitializeでコールバックとして使用

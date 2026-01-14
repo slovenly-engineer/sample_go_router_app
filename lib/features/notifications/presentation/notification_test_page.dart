@@ -11,9 +11,7 @@ class NotificationTestPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Notification Test'),
-      ),
+      appBar: AppBar(title: const Text('Notification Test')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -103,7 +101,9 @@ class NotificationTestPage extends ConsumerWidget {
   }) {
     return ElevatedButton.icon(
       onPressed: () async {
-        await ref.read(notificationServiceProvider).showInstantNotification(
+        await ref
+            .read(notificationServiceProvider)
+            .showInstantNotification(
               id: id,
               title: title,
               body: body,

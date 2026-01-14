@@ -3,7 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sample_go_router_app/core/router/app_navigator.dart';
-import 'package:sample_go_router_app/core/router/route_types.dart' as route_types;
+import 'package:sample_go_router_app/core/router/route_types.dart'
+    as route_types;
 
 class MockGoRouter extends Mock implements GoRouter {
   /// popの呼び出しを記録するためのリスト
@@ -52,8 +53,7 @@ void main() {
       navigator = AppNavigator(mockRouter);
 
       // デフォルトのスタブ設定
-      when(() => mockRouter.push<Object?>(any()))
-          .thenAnswer((_) async => null);
+      when(() => mockRouter.push<Object?>(any())).thenAnswer((_) async => null);
     });
 
     group('navigateTo', () {
