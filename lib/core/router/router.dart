@@ -6,10 +6,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../features/auth/login_route.dart';
 // Import Pages (moved from part files)
 import '../../features/home/presentation/home_page.dart';
-import '../../features/items/item_route.dart';
+import '../../features/items/presentation/item_detail_page.dart';
 import '../../features/mypage/presentation/mypage_page.dart';
 import '../../features/mypage/presentation/settings_page.dart';
-import '../../features/search/filter_route.dart';
+import '../../features/notifications/notification_test_route.dart';
+import '../../features/search/presentation/filter_page.dart';
 import '../../features/search/presentation/search_page.dart';
 import 'route_types.dart'; // HierarchyRoute, ModalRoute
 import 'scaffold_with_nav_bar.dart';
@@ -19,6 +20,8 @@ part '../../features/home/home_route.dart';
 part '../../features/mypage/mypage_route.dart';
 part '../../features/mypage/settings_route.dart';
 part '../../features/search/search_route.dart';
+part '../../features/search/filter_route.dart';
+part '../../features/items/item_route.dart';
 part 'router.g.dart';
 
 @Riverpod(keepAlive: true)
@@ -32,17 +35,28 @@ GoRouter goRouter(Ref ref) {
 
       // 2. Root Routes (Cover BottomNav)
       $loginRoute,
-      $itemDetailRoute,
-      $filterRoute,
+      $notificationTestRoute,
     ],
   );
 }
 
 @TypedStatefulShellRoute<MainDataShellRoute>(
   branches: [
-    TypedStatefulShellBranch(routes: [TypedGoRoute<HomeRoute>(path: '/home')]),
     TypedStatefulShellBranch(
-      routes: [TypedGoRoute<SearchRoute>(path: '/search')],
+      routes: [
+        TypedGoRoute<HomeRoute>(
+          path: '/home',
+          routes: [TypedGoRoute<ItemDetailRoute>(path: 'items/:id')],
+        ),
+      ],
+    ),
+    TypedStatefulShellBranch(
+      routes: [
+        TypedGoRoute<SearchRoute>(
+          path: '/search',
+          routes: [TypedGoRoute<FilterRoute>(path: 'filter')],
+        ),
+      ],
     ),
     TypedStatefulShellBranch(
       routes: [

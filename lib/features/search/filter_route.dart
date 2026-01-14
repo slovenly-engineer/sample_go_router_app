@@ -1,13 +1,8 @@
-import 'package:flutter/material.dart' hide ModalRoute;
-import 'package:go_router/go_router.dart';
+part of '../../core/router/router.dart';
 
-import '../../core/router/route_types.dart';
-import 'presentation/filter_page.dart';
-
-part 'filter_route.g.dart';
-
-@TypedGoRoute<FilterRoute>(path: '/filter')
-class FilterRoute extends ModalRoute with $FilterRoute {
+// SearchRouteの下にネストするため、トップレベル定義はしないが、
+// GoRouterのBuilderで親子関係を作るため、クラス自体はHierarchyRouteを継承する。
+class FilterRoute extends HierarchyRoute with $FilterRoute {
   const FilterRoute();
 
   @override

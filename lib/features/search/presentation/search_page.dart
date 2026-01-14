@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/router/app_navigator.dart';
-import '../filter_route.dart';
+import '../../../core/router/app_navigator.dart';
+import '../../../core/router/router.dart';
 
 class SearchPage extends ConsumerWidget {
   const SearchPage({super.key});
