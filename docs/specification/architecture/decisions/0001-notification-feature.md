@@ -797,31 +797,29 @@ import flutter_local_notifications
 
 ## テスト計画
 
+> **更新（2026-01-14）**: `pathToRoute`関数は廃止されたため、テスト対象から除外。
+> モックライブラリは Mocktail を使用。
+
 ### 単体テスト
-
-#### pathToRoute関数のテスト
-- **テストファイル**: `test/core/router/route_resolver_test.dart`
-- **テスト項目**:
-  - 有効なパスから正しいルートが復元されること
-  - パラメータ付きルート（`/items/:id`）が正しく復元されること
-  - ネストルート（`/mypage/settings`）が正しく復元されること
-  - 無効なパスの場合、`null`が返されること
-  - 存在しないパスの場合、`null`が返されること
-
-#### NotificationServiceのテスト
-- **テストファイル**: `test/features/notifications/data/notification_service_test.dart`
-- **テスト項目**:
-  - `initialize`が正しく初期化すること
-  - `showInstantNotification`が正しく通知を表示すること
-  - 任意のパスを指定して通知を送信できること
-  - `requestIOSPermissions`が正しく権限をリクエストすること
 
 #### NotificationNavigationHandlerのテスト
 - **テストファイル**: `test/features/notifications/handlers/notification_navigation_handler_test.dart`
 - **テスト項目**:
   - `handleNotificationTapped`が正しく画面遷移を実行すること
-  - 無効なパスの場合、画面遷移が実行されないこと
   - 空のペイロードの場合、画面遷移が実行されないこと
+  - nullのペイロードの場合、画面遷移が実行されないこと
+  - パラメータ付きパスで遷移が実行されること
+
+**実装コード**: `test/features/notifications/handlers/notification_navigation_handler_test.dart` を参照
+
+#### NotificationServiceのテスト
+- **テストファイル**: `test/features/notifications/data/notification_service_test.dart`
+- **テスト項目**:
+  - `initialize`が正しく初期化すること
+  - `showInstantNotification`が通知を表示しペイロードにパスが設定されること
+  - 異なるIDで複数の通知を表示できること
+
+**実装コード**: `test/features/notifications/data/notification_service_test.dart` を参照
 
 ### 手動テスト
 1. アプリ起動
