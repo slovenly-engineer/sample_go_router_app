@@ -1,8 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'route_types.dart';
-import 'router.dart';
+import 'package:sample_go_router_app/core/router/route_types.dart';
+import 'package:sample_go_router_app/core/router/router.dart';
 
 part 'app_navigator.g.dart';
 
@@ -13,9 +13,8 @@ AppNavigator appNavigator(Ref ref) {
 }
 
 class AppNavigator {
-  final GoRouter _router;
-
   AppNavigator(this._router);
+  final GoRouter _router;
 
   /// 画面遷移を実行
   /// ルートの型（階層かモーダルか）によって go/push を自動判別

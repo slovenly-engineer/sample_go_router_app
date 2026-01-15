@@ -1,0 +1,115 @@
+name: PR Static Analysis
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+# Cancel in-progress runs for the same PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: '3.32.0'
+
+jobs:
+  format:
+    name: Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Check code formatting
+        run: dart format --set-exit-if-changed .
+
+  analyze:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Check for uncommitted generated files
+        run: |
+          git diff --exit-code || \
+          (echo "Error: Generated files are out of date. Run 'dart run build_runner build' and commit the changes." && exit 1)
+
+      - name: Run static analysis
+        run: flutter analyze --fatal-infos --fatal-warnings
+
+      - name: Run Riverpod lint
+        run: dart run custom_lint
+
+  test:
+    name: Test & Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Run tests with coverage
+        run: flutter test --coverage
+
+      - name: Check coverage threshold
+        uses: VeryGoodOpenSource/very_good_coverage@v3
+        with:
+          path: coverage/lcov.info
+          min_coverage: 70
+          exclude: "**/*.g.dart"
+
+  ci-success:
+    name: CI Success
+    needs: [format, analyze, test]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check all jobs passed
+        run: |
+          if [[ "${{ needs.format.result }}" != "success" ]] || \
+             [[ "${{ needs.analyze.result }}" != "success" ]] || \
+             [[ "${{ needs.test.result }}" != "success" ]]; then
+            echo "One or more jobs failed:"
+            echo "  format: ${{ needs.format.result }}"
+            echo "  analyze: ${{ needs.analyze.result }}"
+            echo "  test: ${{ needs.test.result }}"
+            exit 1
+          fi
+          echo "All checks passed successfully!"

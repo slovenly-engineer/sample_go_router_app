@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
+import 'package:sample_go_router_app/core/router/route_types.dart'; // HierarchyRoute, ModalRoute
+import 'package:sample_go_router_app/core/router/scaffold_with_nav_bar.dart';
 // Import Root Routes
-import '../../features/auth/login_route.dart';
+import 'package:sample_go_router_app/features/auth/login_route.dart';
 // Import Pages (moved from part files)
 import '../../features/home/presentation/home_page.dart';
 import '../../features/items/presentation/item_detail_page.dart';
