@@ -21,7 +21,7 @@ void main() {
       // Arrange
       const payload = '/home/items/42';
       when(() => mockPlugin.getNotificationAppLaunchDetails()).thenAnswer(
-        (_) async => NotificationAppLaunchDetails(
+        (_) async => const NotificationAppLaunchDetails(
           true,
           notificationResponse: NotificationResponse(
             notificationResponseType:
@@ -78,9 +78,9 @@ void main() {
     test('payloadが空の通知は通常起動として扱う', () async {
       // Arrange
       when(() => mockPlugin.getNotificationAppLaunchDetails()).thenAnswer(
-        (_) async => NotificationAppLaunchDetails(
+        (_) async => const NotificationAppLaunchDetails(
           true,
-          notificationResponse: const NotificationResponse(
+          notificationResponse: NotificationResponse(
             notificationResponseType:
                 NotificationResponseType.selectedNotification,
             payload: '',
