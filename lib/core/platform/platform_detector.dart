@@ -15,28 +15,43 @@ class PlatformDetector {
   /// 現在のプラットフォームを取得
   /// テストで上書きされている場合はその値を返す
   ///
-  /// 注意: Web環境では defaultTargetPlatform が iOS/Android を返すことがあるため、
-  /// プラットフォーム判定時は [isWeb] も併用することを推奨
-  TargetPlatform get current => _overridePlatform ?? defaultTargetPlatform;
+  /// 注意: Web環境では null を返します。
+  /// プラットフォーム判定時は必ず [isWeb] を先にチェックしてください。
+  ///
+  /// 例:
+  /// ```dart
+  /// if (PlatformDetector.instance.isWeb) {
+  ///   // Web専用処理
+  /// } else {
+  ///   final platform = PlatformDetector.instance.current;
+  ///   if (platform == TargetPlatform.iOS) {
+  ///     // iOS処理
+  ///   }
+  /// }
+  /// ```
+  TargetPlatform? get current {
+    if (kIsWeb) return null;
+    return _overridePlatform ?? defaultTargetPlatform;
+  }
 
   /// Webプラットフォームかどうか
   /// kIsWeb で判定するため、TargetPlatform の列挙値とは独立
   bool get isWeb => kIsWeb;
 
   /// iOSプラットフォームかどうか
-  bool get isIOS => current == TargetPlatform.iOS;
+  bool get isIOS => !isWeb && current == TargetPlatform.iOS;
 
   /// Androidプラットフォームかどうか
-  bool get isAndroid => current == TargetPlatform.android;
+  bool get isAndroid => !isWeb && current == TargetPlatform.android;
 
   /// Linuxプラットフォームかどうか
-  bool get isLinux => current == TargetPlatform.linux;
+  bool get isLinux => !isWeb && current == TargetPlatform.linux;
 
   /// macOSプラットフォームかどうか
-  bool get isMacOS => current == TargetPlatform.macOS;
+  bool get isMacOS => !isWeb && current == TargetPlatform.macOS;
 
   /// Windowsプラットフォームかどうか
-  bool get isWindows => current == TargetPlatform.windows;
+  bool get isWindows => !isWeb && current == TargetPlatform.windows;
 
   /// テスト用: プラットフォームを上書き
   ///

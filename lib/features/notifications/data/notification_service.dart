@@ -1,18 +1,10 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sample_go_router_app/core/platform/platform_detector.dart';
 import 'package:sample_go_router_app/features/notifications/handlers/notification_navigation_handler.dart';
 
 part 'notification_service.g.dart';
-
-/// バックグラウンド通知タップ時のハンドラー
-/// アプリがバックグラウンドまたは終了状態で通知をタップした場合に呼ばれる
-/// 注意: この関数は別のisolateで実行されるため、Providerへのアクセスは不可
-@pragma('vm:entry-point')
-void notificationTapBackground(NotificationResponse response) {
-  debugPrint('Background notification tapped: ${response.payload}');
-}
 
 @Riverpod(keepAlive: true)
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin(Ref ref) {
@@ -54,13 +46,11 @@ class NotificationService {
       iOS: iosSettings,
     );
 
-    // 通知タップ時の処理はNotificationNavigationHandlerに委譲
-    // バックグラウンド/終了状態での通知タップはnotificationTapBackgroundで処理
+    // フォアグラウンド通知タップのみ処理（バックグラウンドは起動時に処理）
     await _plugin.initialize(
       initSettings,
       onDidReceiveNotificationResponse:
           _navigationHandler.handleNotificationTapped,
-      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
     );
 
     await requestPermissions();
@@ -75,6 +65,12 @@ class NotificationService {
     }
 
     final platform = PlatformDetector.instance.current;
+
+    // Web環境ではcurrentがnullを返すため、null安全チェックを追加
+    if (platform == null) {
+      debugPrint('[WARNING] Cannot determine platform for permission request');
+      return;
+    }
 
     if (platform == TargetPlatform.iOS) {
       await _plugin
@@ -98,25 +94,32 @@ class NotificationService {
     required String body,
     required String path,
   }) async {
-    const androidDetails = AndroidNotificationDetails(
-      'instant_channel',
-      'Instant Notifications',
-      channelDescription: 'Channel for instant notifications',
-      importance: Importance.high,
-      priority: Priority.high,
-    );
+    try {
+      const androidDetails = AndroidNotificationDetails(
+        'instant_channel',
+        'Instant Notifications',
+        channelDescription: 'Channel for instant notifications',
+        importance: Importance.high,
+        priority: Priority.high,
+      );
 
-    const iosDetails = DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
+      const iosDetails = DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      );
 
-    const notificationDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
+      const notificationDetails = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+      );
 
-    await _plugin.show(id, title, body, notificationDetails, payload: path);
+      await _plugin.show(id, title, body, notificationDetails, payload: path);
+    } on Exception catch (e, stackTrace) {
+      debugPrint('[ERROR] Failed to show notification (id: $id): $e');
+      debugPrint('Stack trace: $stackTrace');
+      // エラーをre-throwせず、ログ出力のみで継続
+      // 通知送信失敗がアプリクラッシュを引き起こさないようにする
+    }
   }
 }

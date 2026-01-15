@@ -249,6 +249,88 @@ void main() {
         );
       });
     });
+
+    group('Error Handling', () {
+      test('showInstantNotificationはエラーをキャッチしてログ出力する', () async {
+        // 準備: mockPluginがエラーをthrowするように設定
+        when(
+          () => mockPlugin.show(
+            any(),
+            any(),
+            any(),
+            any(),
+            payload: any(named: 'payload'),
+          ),
+        ).thenThrow(Exception('Test error'));
+
+        // 実行: エラーをthrowせずに正常終了することを確認
+        await expectLater(
+          service.showInstantNotification(
+            id: 1,
+            title: 'Test',
+            body: 'Test',
+            path: '/test',
+          ),
+          completes,
+        );
+
+        // 検証: show呼び出しは試みられた
+        verify(
+          () => mockPlugin.show(
+            any(),
+            any(),
+            any(),
+            any(),
+            payload: any(named: 'payload'),
+          ),
+        ).called(1);
+      });
+
+      test('showInstantNotificationは複数回エラーが発生してもクラッシュしない', () async {
+        // 準備: mockPluginが常にエラーをthrowするように設定
+        when(
+          () => mockPlugin.show(
+            any(),
+            any(),
+            any(),
+            any(),
+            payload: any(named: 'payload'),
+          ),
+        ).thenThrow(Exception('Persistent error'));
+
+        // 実行: 複数回呼び出してもクラッシュしないことを確認
+        await expectLater(
+          service.showInstantNotification(
+            id: 1,
+            title: 'Test 1',
+            body: 'Test 1',
+            path: '/test1',
+          ),
+          completes,
+        );
+
+        await expectLater(
+          service.showInstantNotification(
+            id: 2,
+            title: 'Test 2',
+            body: 'Test 2',
+            path: '/test2',
+          ),
+          completes,
+        );
+
+        // 検証: show呼び出しは2回試みられた
+        verify(
+          () => mockPlugin.show(
+            any(),
+            any(),
+            any(),
+            any(),
+            payload: any(named: 'payload'),
+          ),
+        ).called(2);
+      });
+    });
   });
 
   group('Riverpod Providers', () {
