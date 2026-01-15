@@ -10,7 +10,7 @@ part of 'notification_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(flutterLocalNotificationsPlugin)
-const flutterLocalNotificationsPluginProvider =
+final flutterLocalNotificationsPluginProvider =
     FlutterLocalNotificationsPluginProvider._();
 
 final class FlutterLocalNotificationsPluginProvider
@@ -21,7 +21,7 @@ final class FlutterLocalNotificationsPluginProvider
           FlutterLocalNotificationsPlugin
         >
     with $Provider<FlutterLocalNotificationsPlugin> {
-  const FlutterLocalNotificationsPluginProvider._()
+  FlutterLocalNotificationsPluginProvider._()
     : super(
         from: null,
         argument: null,
@@ -61,7 +61,7 @@ String _$flutterLocalNotificationsPluginHash() =>
     r'5012bb087ba16f70c0b479f4f83169aed9e1b683';
 
 @ProviderFor(notificationService)
-const notificationServiceProvider = NotificationServiceProvider._();
+final notificationServiceProvider = NotificationServiceProvider._();
 
 final class NotificationServiceProvider
     extends
@@ -71,7 +71,7 @@ final class NotificationServiceProvider
           NotificationService
         >
     with $Provider<NotificationService> {
-  const NotificationServiceProvider._()
+  NotificationServiceProvider._()
     : super(
         from: null,
         argument: null,

@@ -10,7 +10,7 @@ part of 'notification_navigation_handler.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(notificationNavigationHandler)
-const notificationNavigationHandlerProvider =
+final notificationNavigationHandlerProvider =
     NotificationNavigationHandlerProvider._();
 
 final class NotificationNavigationHandlerProvider
@@ -21,7 +21,7 @@ final class NotificationNavigationHandlerProvider
           NotificationNavigationHandler
         >
     with $Provider<NotificationNavigationHandler> {
-  const NotificationNavigationHandlerProvider._()
+  NotificationNavigationHandlerProvider._()
     : super(
         from: null,
         argument: null,

@@ -1,6 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../core/router/app_navigator.dart';
+import 'package:sample_go_router_app/core/router/app_navigator.dart';
 
 part 'notification_navigation_handler.g.dart';
 
@@ -12,10 +12,10 @@ NotificationNavigationHandler notificationNavigationHandler(Ref ref) {
 }
 
 class NotificationNavigationHandler {
-  final AppNavigator _navigator;
 
   NotificationNavigationHandler({required AppNavigator navigator})
     : _navigator = navigator;
+  final AppNavigator _navigator;
 
   /// 通知タップ時の処理
   /// NotificationServiceのinitializeでコールバックとして使用

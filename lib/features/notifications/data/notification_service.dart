@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../core/platform/platform_detector.dart';
-import '../handlers/notification_navigation_handler.dart';
+import 'package:sample_go_router_app/core/platform/platform_detector.dart';
+import 'package:sample_go_router_app/features/notifications/handlers/notification_navigation_handler.dart';
 
 part 'notification_service.g.dart';
 
@@ -28,14 +28,14 @@ NotificationService notificationService(Ref ref) {
 }
 
 class NotificationService {
-  final FlutterLocalNotificationsPlugin _plugin;
-  final NotificationNavigationHandler _navigationHandler;
 
   NotificationService({
     required FlutterLocalNotificationsPlugin plugin,
     required NotificationNavigationHandler navigationHandler,
   }) : _plugin = plugin,
        _navigationHandler = navigationHandler;
+  final FlutterLocalNotificationsPlugin _plugin;
+  final NotificationNavigationHandler _navigationHandler;
 
   /// 初期化
   /// initSettingsは内部で定義（固定値）

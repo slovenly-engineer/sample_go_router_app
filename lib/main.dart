@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'core/router/router.dart';
-import 'features/notifications/data/notification_service.dart';
+import 'package:sample_go_router_app/core/router/router.dart';
+import 'package:sample_go_router_app/features/notifications/data/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

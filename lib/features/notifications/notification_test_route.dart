@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide ModalRoute;
 import 'package:go_router/go_router.dart';
-import '../../core/router/route_types.dart';
-import 'presentation/notification_test_page.dart';
+import 'package:sample_go_router_app/core/router/route_types.dart';
+import 'package:sample_go_router_app/features/notifications/presentation/notification_test_page.dart';
 
 part 'notification_test_route.g.dart';
 

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../core/router/app_navigator.dart';
-import '../../notifications/notification_test_route.dart';
-import 'home_view_model.dart';
+import 'package:sample_go_router_app/core/router/app_navigator.dart';
+import 'package:sample_go_router_app/features/home/presentation/home_view_model.dart';
+import 'package:sample_go_router_app/features/notifications/notification_test_route.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});

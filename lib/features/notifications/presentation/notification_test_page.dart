@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/router/route_types.dart';
-import '../../../core/router/router.dart';
-import '../../auth/login_route.dart';
-import '../data/notification_service.dart';
+import 'package:sample_go_router_app/core/router/route_types.dart';
+import 'package:sample_go_router_app/core/router/router.dart';
+import 'package:sample_go_router_app/features/auth/login_route.dart';
+import 'package:sample_go_router_app/features/notifications/data/notification_service.dart';
 
 class NotificationTestPage extends ConsumerWidget {
   const NotificationTestPage({super.key});
