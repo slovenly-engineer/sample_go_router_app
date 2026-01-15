@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:sample_go_router_app/core/app_launch/app_launch_manager_provider.dart';
 import 'package:sample_go_router_app/core/router/route_types.dart';
 import 'package:sample_go_router_app/core/router/scaffold_with_nav_bar.dart';
 import 'package:sample_go_router_app/features/auth/login_route.dart';
@@ -26,6 +27,22 @@ GoRouter goRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/home',
     debugLogDiagnostics: true,
+    redirect: (context, state) {
+      // 起動情報を消費（一度だけ取得）
+      final launchInfo = ref
+          .read(appLaunchManagerProvider)
+          .consumeLaunchInfo();
+
+      if (launchInfo != null && launchInfo.hasPath) {
+        debugPrint(
+          '[INFO] Redirecting to launch path: ${launchInfo.path} '
+          '(source: ${launchInfo.source})',
+        );
+        return launchInfo.path;
+      }
+
+      return null; // 通常のルーティング
+    },
     routes: [
       // 1. StatefulShellRoute (Bottom Navigation)
       $mainDataShellRoute,
