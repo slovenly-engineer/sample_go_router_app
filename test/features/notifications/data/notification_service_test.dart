@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:sample_go_router_app/core/platform/platform_detector.dart';
 import 'package:sample_go_router_app/features/notifications/data/notification_service.dart';
 import 'package:sample_go_router_app/features/notifications/handlers/notification_navigation_handler.dart';
 
@@ -9,6 +11,9 @@ class MockFlutterLocalNotificationsPlugin extends Mock
 
 class MockIOSFlutterLocalNotificationsPlugin extends Mock
     implements IOSFlutterLocalNotificationsPlugin {}
+
+class MockAndroidFlutterLocalNotificationsPlugin extends Mock
+    implements AndroidFlutterLocalNotificationsPlugin {}
 
 class MockNotificationNavigationHandler extends Mock
     implements NotificationNavigationHandler {}
@@ -60,6 +65,13 @@ void main() {
       ).thenReturn(null);
 
       when(
+        () => mockPlugin
+            .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin
+            >(),
+      ).thenReturn(null);
+
+      when(
         () => mockPlugin.show(
           any(),
           any(),
@@ -74,7 +86,7 @@ void main() {
       // 実行
       await service.initialize();
 
-      // 検証
+      // 検証: プラグインの初期化が呼ばれること
       verify(
         () => mockPlugin.initialize(
           any(),
@@ -85,6 +97,15 @@ void main() {
             named: 'onDidReceiveBackgroundNotificationResponse',
           ),
         ),
+      ).called(1);
+
+      // 検証: 権限リクエストの試行が呼ばれること
+      // （テスト環境ではデフォルトでAndroid実装が試みられる）
+      verify(
+        () => mockPlugin
+            .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin
+            >(),
       ).called(1);
     });
 
@@ -145,10 +166,17 @@ void main() {
       ).called(1);
     });
 
-    group('requestIOSPermissions', () {
-      test('iOS実装が存在する場合に権限リクエストが呼ばれること', () async {
+    group('requestPermissions', () {
+      setUp(() {
+        // 各テストの後にプラットフォーム上書きをリセット
+        addTearDown(() => PlatformDetector.instance.reset());
+      });
+
+      test('iOSプラットフォームの場合にiOS権限リクエストが呼ばれること', () async {
         // 準備
+        PlatformDetector.instance.overridePlatform(TargetPlatform.iOS);
         final mockIOSPlugin = MockIOSFlutterLocalNotificationsPlugin();
+
         when(
           () => mockPlugin
               .resolvePlatformSpecificImplementation<
@@ -164,7 +192,7 @@ void main() {
         ).thenAnswer((_) async => true);
 
         // 実行
-        await service.requestIOSPermissions();
+        await service.requestPermissions();
 
         // 検証
         verify(
@@ -176,11 +204,53 @@ void main() {
         ).called(1);
       });
 
-      test('iOS実装が存在しない場合はエラーなく完了すること', () async {
-        // 準備（setUpでnullを返すように設定済み）
+      test('Androidプラットフォームの場合にAndroid権限リクエストが呼ばれること', () async {
+        // 準備
+        PlatformDetector.instance.overridePlatform(TargetPlatform.android);
+        final mockAndroidPlugin = MockAndroidFlutterLocalNotificationsPlugin();
+
+        when(
+          () => mockPlugin
+              .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin
+              >(),
+        ).thenReturn(mockAndroidPlugin);
+        when(
+          () => mockAndroidPlugin.requestNotificationsPermission(),
+        ).thenAnswer((_) async => true);
+
+        // 実行
+        await service.requestPermissions();
+
+        // 検証
+        verify(
+          () => mockAndroidPlugin.requestNotificationsPermission(),
+        ).called(1);
+      });
+
+      test('その他のプラットフォームの場合は何も実行されないこと', () async {
+        // 準備
+        PlatformDetector.instance.overridePlatform(TargetPlatform.linux);
 
         // 実行・検証（例外が発生しないこと）
-        await expectLater(service.requestIOSPermissions(), completes);
+        await expectLater(
+          service.requestPermissions(),
+          completes,
+        );
+
+        // iOS/Android実装は呼ばれない
+        verifyNever(
+          () => mockPlugin
+              .resolvePlatformSpecificImplementation<
+                IOSFlutterLocalNotificationsPlugin
+              >(),
+        );
+        verifyNever(
+          () => mockPlugin
+              .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin
+              >(),
+        );
       });
     });
   });

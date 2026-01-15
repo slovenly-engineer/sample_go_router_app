@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../../core/platform/platform_detector.dart';
 import '../handlers/notification_navigation_handler.dart';
 
 part 'notification_service.g.dart';
@@ -43,10 +44,11 @@ class NotificationService {
     const androidSettings = AndroidInitializationSettings(
       '@mipmap/ic_launcher',
     );
+    // iOS権限リクエストは requestPermissions() で実施するため、ここでは無効化
     const iosSettings = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
     );
     const initSettings = InitializationSettings(
       android: androidSettings,
@@ -62,15 +64,32 @@ class NotificationService {
       onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
     );
 
-    await requestIOSPermissions();
+    await requestPermissions();
   }
 
-  Future<void> requestIOSPermissions() async {
-    await _plugin
-        .resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin
-        >()
-        ?.requestPermissions(alert: true, badge: true, sound: true);
+  /// 通知権限をリクエスト
+  /// プラットフォームに応じて適切な権限リクエストを実行
+  Future<void> requestPermissions() async {
+    // Webでは通知権限リクエストは不要
+    if (PlatformDetector.instance.isWeb) {
+      return;
+    }
+
+    final platform = PlatformDetector.instance.current;
+
+    if (platform == TargetPlatform.iOS) {
+      await _plugin
+          .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin
+          >()
+          ?.requestPermissions(alert: true, badge: true, sound: true);
+    } else if (platform == TargetPlatform.android) {
+      await _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >()
+          ?.requestNotificationsPermission();
+    }
   }
 
   /// 即座に通知表示（基本メソッド）
