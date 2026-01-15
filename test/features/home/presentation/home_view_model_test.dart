@@ -46,8 +46,7 @@ void main() {
         mockNavigator.navigateTo(
           argThat(
             predicate<GoRouteData>(
-              (route) =>
-                  route is ItemDetailRoute && route.id == testId,
+              (route) => route is ItemDetailRoute && route.id == testId,
             ),
           ),
         ),
@@ -57,10 +56,9 @@ void main() {
     test('onItemSelected should call navigateTo with ItemDetailRoute type', () {
       // Arrange
       const testId = 'another-id';
-      final viewModel = container.read(homeViewModelProvider.notifier);
 
       // Act
-      viewModel.onItemSelected(testId);
+      container.read(homeViewModelProvider.notifier).onItemSelected(testId);
 
       // Assert
       verify(mockNavigator.navigateTo(argThat(isA<ItemDetailRoute>())))

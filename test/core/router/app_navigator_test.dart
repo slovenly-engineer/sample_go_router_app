@@ -31,8 +31,8 @@ class MockGoRouter extends Mock implements GoRouter {
   Future<T?> push<T extends Object?>(String location, {Object? extra}) =>
       super.noSuchMethod(
         Invocation.method(#push, [location], {#extra: extra}),
-        returnValue: Future<T?>.value(null),
-        returnValueForMissingStub: Future<T?>.value(null),
+        returnValue: Future<T?>.value(),
+        returnValueForMissingStub: Future<T?>.value(),
       ) as Future<T?>;
 
   @override
@@ -62,7 +62,7 @@ void main() {
 
         // Assert
         verify(mockRouter.go('/test-hierarchy')).called(1);
-        verifyNever(mockRouter.push(any));
+        verifyNever(mockRouter.push<Object?>(any));
       });
 
       test('should call push() for ModalRoute', () {
@@ -73,7 +73,7 @@ void main() {
         navigator.navigateTo(route);
 
         // Assert
-        verify(mockRouter.push('/test-modal')).called(1);
+        verify(mockRouter.push<Object?>('/test-modal')).called(1);
         verifyNever(mockRouter.go(any));
       });
 
@@ -83,12 +83,13 @@ void main() {
         const modalRoute = TestModalRoute();
 
         // Act
-        navigator.navigateTo(hierarchyRoute);
-        navigator.navigateTo(modalRoute);
+        navigator
+          ..navigateTo(hierarchyRoute)
+          ..navigateTo(modalRoute);
 
         // Assert
         verify(mockRouter.go('/test-hierarchy')).called(1);
-        verify(mockRouter.push('/test-modal')).called(1);
+        verify(mockRouter.push<Object?>('/test-modal')).called(1);
       });
     });
 
@@ -98,7 +99,7 @@ void main() {
         navigator.pop();
 
         // Assert
-        verify(mockRouter.pop(null)).called(1);
+        verify(mockRouter.pop<Object?>()).called(1);
       });
 
       test('should call router.pop() with result', () {
@@ -109,19 +110,19 @@ void main() {
         navigator.pop(result);
 
         // Assert
-        verify(mockRouter.pop(result)).called(1);
+        verify(mockRouter.pop<String>(result)).called(1);
       });
 
       test('should handle different result types', () {
         // Act & Assert
         navigator.pop(42);
-        verify(mockRouter.pop(42)).called(1);
+        verify(mockRouter.pop<int>(42)).called(1);
 
         navigator.pop(true);
-        verify(mockRouter.pop(true)).called(1);
+        verify(mockRouter.pop<bool>(true)).called(1);
 
         navigator.pop({'key': 'value'});
-        verify(mockRouter.pop({'key': 'value'})).called(1);
+        verify(mockRouter.pop<Map<String, String>>({'key': 'value'})).called(1);
       });
     });
   });
