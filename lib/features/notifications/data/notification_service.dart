@@ -28,7 +28,6 @@ NotificationService notificationService(Ref ref) {
 }
 
 class NotificationService {
-
   NotificationService({
     required FlutterLocalNotificationsPlugin plugin,
     required NotificationNavigationHandler navigationHandler,

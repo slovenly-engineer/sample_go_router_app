@@ -12,7 +12,6 @@ NotificationNavigationHandler notificationNavigationHandler(Ref ref) {
 }
 
 class NotificationNavigationHandler {
-
   NotificationNavigationHandler({required AppNavigator navigator})
     : _navigator = navigator;
   final AppNavigator _navigator;

@@ -223,9 +223,7 @@ void main() {
         await service.requestPermissions();
 
         // 検証
-        verify(
-          mockAndroidPlugin.requestNotificationsPermission,
-        ).called(1);
+        verify(mockAndroidPlugin.requestNotificationsPermission).called(1);
       });
 
       test('その他のプラットフォームの場合は何も実行されないこと', () async {
@@ -233,10 +231,7 @@ void main() {
         PlatformDetector.instance.overridePlatform(TargetPlatform.linux);
 
         // 実行・検証（例外が発生しないこと）
-        await expectLater(
-          service.requestPermissions(),
-          completes,
-        );
+        await expectLater(service.requestPermissions(), completes);
 
         // iOS/Android実装は呼ばれない
         verifyNever(
