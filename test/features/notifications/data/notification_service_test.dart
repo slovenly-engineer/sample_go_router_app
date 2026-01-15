@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sample_go_router_app/core/platform/platform_detector.dart';
@@ -247,6 +248,45 @@ void main() {
               >(),
         );
       });
+    });
+  });
+
+  group('Riverpod Providers', () {
+    test('flutterLocalNotificationsPluginProviderが正しいインスタンスを返すこと', () {
+      // 準備
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      // 実行
+      final plugin = container.read(flutterLocalNotificationsPluginProvider);
+
+      // 検証
+      expect(plugin, isA<FlutterLocalNotificationsPlugin>());
+    });
+
+    test('notificationServiceProviderが正しいインスタンスを返すこと', () {
+      // 準備
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      // 実行
+      final service = container.read(notificationServiceProvider);
+
+      // 検証
+      expect(service, isA<NotificationService>());
+    });
+
+    test('notificationServiceProviderは同じインスタンスを返すこと(keepAlive)', () {
+      // 準備
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      // 実行
+      final service1 = container.read(notificationServiceProvider);
+      final service2 = container.read(notificationServiceProvider);
+
+      // 検証: 同一インスタンス
+      expect(identical(service1, service2), isTrue);
     });
   });
 }
