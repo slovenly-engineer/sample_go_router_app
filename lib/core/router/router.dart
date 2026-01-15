@@ -29,9 +29,7 @@ GoRouter goRouter(Ref ref) {
     debugLogDiagnostics: true,
     redirect: (context, state) {
       // 起動情報を消費（一度だけ取得）
-      final launchInfo = ref
-          .read(appLaunchManagerProvider)
-          .consumeLaunchInfo();
+      final launchInfo = ref.read(appLaunchManagerProvider).consumeLaunchInfo();
 
       if (launchInfo != null && launchInfo.hasPath) {
         debugPrint(

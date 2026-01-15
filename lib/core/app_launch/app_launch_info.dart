@@ -12,11 +12,7 @@ enum AppLaunchSource {
 
 /// アプリ起動時の情報を保持するデータクラス
 class AppLaunchInfo {
-  const AppLaunchInfo({
-    required this.source,
-    this.path,
-    this.payload,
-  });
+  const AppLaunchInfo({required this.source, this.path, this.payload});
 
   /// 起動ソース
   final AppLaunchSource source;

@@ -12,9 +12,7 @@ void main() async {
 
   if (!kIsWeb) {
     // 起動情報の収集（通知、ディープリンクなど）
-    await container
-        .read(appLaunchManagerProvider)
-        .collectLaunchInfo();
+    await container.read(appLaunchManagerProvider).collectLaunchInfo();
 
     // NotificationServiceの初期化
     await container.read(notificationServiceProvider).initialize();

@@ -25,10 +25,7 @@ void main() {
       expect(PlatformDetector.instance.current, equals(TargetPlatform.iOS));
 
       PlatformDetector.instance.overridePlatform(TargetPlatform.android);
-      expect(
-        PlatformDetector.instance.current,
-        equals(TargetPlatform.android),
-      );
+      expect(PlatformDetector.instance.current, equals(TargetPlatform.android));
     });
 
     test('resetで上書きをクリアできる', () {

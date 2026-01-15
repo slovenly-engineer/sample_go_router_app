@@ -45,9 +45,9 @@ void main() {
 
     test('通常起動の場合、normal sourceを設定する', () async {
       // Arrange
-      when(() => mockPlugin.getNotificationAppLaunchDetails()).thenAnswer(
-        (_) async => const NotificationAppLaunchDetails(false),
-      );
+      when(
+        () => mockPlugin.getNotificationAppLaunchDetails(),
+      ).thenAnswer((_) async => const NotificationAppLaunchDetails(false));
 
       // Act
       await manager.collectLaunchInfo();
@@ -62,9 +62,9 @@ void main() {
 
     test('consumeLaunchInfoは一度だけ情報を返す', () async {
       // Arrange
-      when(() => mockPlugin.getNotificationAppLaunchDetails()).thenAnswer(
-        (_) async => const NotificationAppLaunchDetails(false),
-      );
+      when(
+        () => mockPlugin.getNotificationAppLaunchDetails(),
+      ).thenAnswer((_) async => const NotificationAppLaunchDetails(false));
       await manager.collectLaunchInfo();
 
       // Act & Assert

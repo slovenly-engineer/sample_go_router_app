@@ -21,8 +21,8 @@ class AppLaunchManager {
   /// 通知、ディープリンクなど、すべての起動ソースを確認
   Future<void> collectLaunchInfo() async {
     // 通知からの起動を確認
-    final notificationDetails =
-        await _notificationPlugin.getNotificationAppLaunchDetails();
+    final notificationDetails = await _notificationPlugin
+        .getNotificationAppLaunchDetails();
 
     if (notificationDetails?.didNotificationLaunchApp ?? false) {
       final path = notificationDetails?.notificationResponse?.payload;
