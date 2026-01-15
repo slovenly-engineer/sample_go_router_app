@@ -214,12 +214,15 @@ NotificationService notificationService(Ref ref) {
 class NotificationService {
   final FlutterLocalNotificationsPlugin _plugin;
   final NotificationNavigationHandler _navigationHandler;
+  final TargetPlatform? _platform;
 
   NotificationService({
     required FlutterLocalNotificationsPlugin plugin,
     required NotificationNavigationHandler navigationHandler,
+    TargetPlatform? platform,
   })  : _plugin = plugin,
-        _navigationHandler = navigationHandler;
+        _navigationHandler = navigationHandler,
+        _platform = platform;
 
   /// 初期化
   /// initSettingsは内部で定義（固定値）
@@ -242,18 +245,29 @@ class NotificationService {
       onDidReceiveNotificationResponse: _navigationHandler.handleNotificationTapped,
     );
 
-    await requestIOSPermissions();
+    await requestPermissions();
   }
 
-  Future<void> requestIOSPermissions() async {
-    await _plugin
-        .resolvePlatformSpecificImplementation<
+  /// 通知権限をリクエスト
+  /// プラットフォームに応じて適切な権限リクエストを実行
+  Future<void> requestPermissions() async {
+    final platform = _platform ?? defaultTargetPlatform;
+
+    if (platform == TargetPlatform.iOS) {
+      await _plugin
+          .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    } else if (platform == TargetPlatform.android) {
+      await _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestNotificationsPermission();
+    }
   }
 
   /// 即座に通知表示（基本メソッド）
@@ -818,6 +832,9 @@ import flutter_local_notifications
   - `initialize`が正しく初期化すること
   - `showInstantNotification`が通知を表示しペイロードにパスが設定されること
   - 異なるIDで複数の通知を表示できること
+  - `requestPermissions` がiOSプラットフォームの場合にiOS権限リクエストを呼び出すこと
+  - `requestPermissions` がAndroidプラットフォームの場合にAndroid権限リクエストを呼び出すこと
+  - `requestPermissions` がその他のプラットフォームの場合に何も実行しないこと
 
 **実装コード**: `test/features/notifications/data/notification_service_test.dart` を参照
 
@@ -960,9 +977,148 @@ class FilterRoute extends HierarchyRoute with $FilterRoute {
 - 親子関係のある画面は子ルートとして定義する（`SettingsRoute`パターン参照）
 - `part of router.dart`形式を使用すると、ルート階層が明確になる
 
+### 問題: Androidビルド時にcore library desugaringエラーが発生する
+
+**症状**:
+```
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:checkReleaseAarMetadata'.
+> A failure occurred while executing com.android.build.gradle.internal.tasks.CheckAarMetadataWorkAction
+   > An issue was found when checking AAR metadata:
+
+       1.  Dependency ':flutter_local_notifications' requires core library desugaring to be enabled
+           for :app.
+```
+
+**原因**:
+`flutter_local_notifications` パッケージが Java 8以降のAPI（java.timeパッケージなど）を使用しているため、Android Gradle Plugin のcore library desugaring機能を有効にする必要がある。desugaring機能により、古いAndroidバージョン（API level 26未満）でもJava 8+ APIを使用できるようになる。
+
+**解決策**:
+
+[android/app/build.gradle.kts](../../../../../android/app/build.gradle.kts) に以下の設定を追加：
+
+1. **compileOptionsセクションに`coreLibraryDesugaringEnabled`を追加**:
+```kotlin
+compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    isCoreLibraryDesugaringEnabled = true
+}
+```
+
+2. **dependenciesセクションに desugaring ライブラリを追加**:
+```kotlin
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+}
+```
+
+**修正完了日**: 2026-01-15
+
+**教訓**:
+- flutter_local_notificationsなど、Java 8+ APIを使用するパッケージを導入する際は、Androidのcore library desugaringが必要
+- エラーメッセージに記載されたURLを確認し、公式の推奨設定に従う
+- [Android公式ドキュメント: Java 8+サポート](https://developer.android.com/studio/write/java8-support.html)
+
+### 問題: Android 13+ で起動時に通知許諾ダイアログが表示されない
+
+**症状**:
+- Android 13以上のデバイスでアプリを起動しても、通知許諾ダイアログが自動表示されない
+- iOSでは起動時にダイアログが表示されるが、Androidでは表示されない
+- AndroidManifest.xmlには `POST_NOTIFICATIONS` 権限が宣言されているにもかかわらず、通知が送信できない
+
+**原因**:
+Android 13 (API level 33) 以上では、POST_NOTIFICATIONS は危険権限（Dangerous Permission）として分類され、実行時リクエストが必須になりました。AndroidManifest.xml への静的な権限宣言だけでは不十分で、アプリ起動時に `requestNotificationsPermission()` を呼び出す必要があります。
+
+当初の実装では `requestIOSPermissions()` のみが実装されており、Android向けの実行時リクエスト処理が欠落していました。
+
+**解決策**:
+
+1. **NotificationService に単一の `requestPermissions()` メソッドを実装**:
+
+```dart
+class NotificationService {
+  final FlutterLocalNotificationsPlugin _plugin;
+  final NotificationNavigationHandler _navigationHandler;
+  final TargetPlatform? _platform;
+
+  NotificationService({
+    required FlutterLocalNotificationsPlugin plugin,
+    required NotificationNavigationHandler navigationHandler,
+    TargetPlatform? platform,  // テスト用に依存性注入可能
+  }) : _plugin = plugin,
+       _navigationHandler = navigationHandler,
+       _platform = platform;
+
+  /// 通知権限をリクエスト
+  /// プラットフォームに応じて適切な権限リクエストを実行
+  Future<void> requestPermissions() async {
+    final platform = _platform ?? defaultTargetPlatform;
+
+    if (platform == TargetPlatform.iOS) {
+      await _plugin
+          .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    } else if (platform == TargetPlatform.android) {
+      await _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestNotificationsPermission();
+    }
+  }
+}
+```
+
+2. **`initialize()` メソッドで権限リクエストを呼び出し**:
+
+```dart
+Future<void> initialize() async {
+  // ... 初期化設定 ...
+
+  await _plugin.initialize(
+    initSettings,
+    onDidReceiveNotificationResponse:
+        _navigationHandler.handleNotificationTapped,
+    onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+  );
+
+  await requestPermissions();  // 単一メソッドで両プラットフォームに対応
+}
+```
+
+**修正完了日**: 2026-01-15
+
+**設計判断**:
+- **単一メソッド化**: `requestIOSPermissions()` と `requestAndroidPermissions()` を分離するのではなく、単一の `requestPermissions()` メソッド内でプラットフォーム判定を行う設計に変更
+  - 呼び出し側が複数のメソッドを意識する必要がなくなる
+  - プラットフォーム判定ロジックが内部に集約される
+- **依存性注入**: `TargetPlatform` をコンストラクタで注入可能にすることで、単体テストでプラットフォーム分岐を検証可能
+  - 本番環境では `defaultTargetPlatform` を使用
+  - テスト環境では `TargetPlatform.iOS` や `TargetPlatform.android` を明示的に指定
+
+**教訓**:
+- Android 13+ では POST_NOTIFICATIONS が危険権限に昇格したため、実行時リクエストが必須
+- プラットフォーム判定ロジックは内部に隠蔽し、呼び出し側をシンプルに保つ
+- OS分岐は単体テストで検証できるよう、依存性注入を活用する
+- `resolvePlatformSpecificImplementation` は適切にプラットフォームを判定するため、追加の `Platform.isAndroid` 判定は不要
+- flutter_local_notifications パッケージは `requestNotificationsPermission()` メソッドを提供しているため、追加のパーミッションライブラリ（permission_handlerなど）は不要
+
+**参考資料**:
+- [Handling Notification Permissions in Flutter for Android 13](https://www.linkedin.com/pulse/handling-notification-permissions-flutter-android-13-neha-tanwar)
+- [Android Notification Runtime Permissions](https://developer.android.com/develop/ui/views/notifications/notification-permission)
+- [flutter_local_notifications package](https://pub.dev/packages/flutter_local_notifications)
+
 ## 参考資料
 
 - [flutter_local_notifications パッケージ](https://pub.dev/packages/flutter_local_notifications)
 - [GoRouter 公式ドキュメント](https://pub.dev/packages/go_router)
 - [プロジェクトアーキテクチャ原則](../../../common/architecture-principles.md)
 - [新機能追加手順](../../implementation/how-to/add-feature.md)
+- [Android Java 8+ サポート](https://developer.android.com/studio/write/java8-support.html)
