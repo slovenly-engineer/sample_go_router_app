@@ -1,12 +1,13 @@
 # ADR-0001: flutter_local_notifications 導入とプッシュ通知からの画面遷移機能
 
 作成日: 2026-01-13
-ステータス: 承認済み（実装完了: 2026-01-14、ADR更新: 2026-01-15）
+ステータス: 承認済み（実装完了: 2026-01-14、コードレビュー対応完了: 2026-01-15）
 
 更新履歴:
 - 2026-01-13: 初版作成（実装前の計画）
 - 2026-01-14: 実装完了、トラブルシューティング追記
 - 2026-01-15: 実装完了後のADR更新（issue #5対応）
+- 2026-01-15: PR #10コードレビュー対応（Web環境対応、バックグラウンド通知タップ、エラーハンドリング）
 
 ## 概要
 
@@ -1228,3 +1229,241 @@ Future<void> initialize() async {
 - [プロジェクトアーキテクチャ原則](../../../common/architecture-principles.md)
 - [新機能追加手順](../../implementation/how-to/add-feature.md)
 - [Android Java 8+ サポート](https://developer.android.com/studio/write/java8-support.html)
+- [Flutter - Isolates and background processes](https://docs.flutter.dev/perf/isolates)
+- [Dart - Working with isolates](https://dart.dev/guides/language/concurrency)
+
+---
+
+## コードレビュー対応（2026-01-15）
+
+### 概要
+
+PR #10のコードレビュー結果（[GitHub Comment](https://github.com/slovenly-engineer/sample_go_router_app/pull/10#issuecomment-3754493520)）に基づき、以下の4つの問題を修正しました：
+
+1. **Web環境でのクラッシュリスク対応**
+2. **バックグラウンド通知タップ時の画面遷移実装**
+3. **PlatformDetectorの設計不整合の修正**
+4. **エラーハンドリングの追加**
+
+### 修正内容
+
+#### 1. Web環境でのクラッシュ防止
+
+**問題**: `main.dart`でWeb環境でも`flutter_local_notifications`を初期化しており、`MissingPluginException`が発生する。
+
+**解決策**: `main.dart`に`kIsWeb`ガードを追加し、Web環境では通知初期化をスキップ。
+
+```dart
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final container = ProviderContainer();
+
+  // Web環境では通知初期化をスキップ
+  if (!kIsWeb) {
+    await container.read(notificationServiceProvider).initialize();
+  }
+
+  runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
+}
+```
+
+**修正ファイル**: [lib/main.dart](../../../main.dart#L8-L18)
+
+#### 2. バックグラウンド通知タップ時の画面遷移実装
+
+**問題**: `notificationTapBackground()`がログ出力のみで画面遷移を行っていない。
+
+**解決策**: `GlobalKey<NavigatorState>`を使用してバックグラウンドから画面遷移を実行。
+
+**実装方針**:
+- `main.dart`でGlobalKeyを定義し、GoRouterのnavigatorKeyとして設定
+- `notificationTapBackground()`からGlobalKeyを使用して`context.go()`で遷移
+- 別isolateで実行されるため、Providerやinstance methodsは使用不可
+
+```dart
+// main.dart
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+// router.dart
+@Riverpod(keepAlive: true)
+GoRouter goRouter(Ref ref) {
+  return GoRouter(
+    initialLocation: '/home',
+    debugLogDiagnostics: true,
+    navigatorKey: navigatorKey, // GlobalKeyを設定
+    routes: [...],
+  );
+}
+
+// notification_service.dart
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse response) {
+  debugPrint('Background notification tapped: ${response.payload}');
+
+  final path = response.payload;
+  if (path == null || path.isEmpty) {
+    debugPrint('[WARNING] Empty payload in background notification');
+    return;
+  }
+
+  try {
+    // WidgetsBinding.instance.addPostFrameCallbackを使用して、
+    // フレームの描画後に遷移を実行（アプリ起動直後のクラッシュを防ぐ）
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final context = navigatorKey.currentContext;
+      if (context != null) {
+        context.go(path);
+      } else {
+        debugPrint('[WARNING] Navigator context is null in background tap');
+      }
+    });
+  } on Exception catch (e) {
+    debugPrint('[ERROR] Failed to navigate from background notification: $e');
+  }
+}
+```
+
+**制約事項**:
+- バックグラウンドではAppNavigatorのロジック（ModalRoute判定）を使用できない
+- `go()`のみ使用可能（`push()`は使用不可）
+- GlobalKeyはisolate境界を越えて共有可能
+
+**修正ファイル**:
+- [lib/main.dart](../../../main.dart#L8)
+- [lib/core/router/router.dart](../../../core/router/router.dart#L27)
+- [lib/features/notifications/data/notification_service.dart](../../../features/notifications/data/notification_service.dart#L11-L43)
+
+#### 3. PlatformDetectorの設計改善
+
+**問題**: Web環境で`PlatformDetector.current`が`iOS`や`Android`を返す可能性があり、`isWeb`と矛盾する。
+
+**解決策**: `current`をnullableに変更し、Web環境では`null`を返すように修正。
+
+```dart
+class PlatformDetector {
+  /// 現在のプラットフォームを取得
+  /// テストで上書きされている場合はその値を返す
+  ///
+  /// 注意: Web環境では null を返します。
+  /// プラットフォーム判定時は必ず [isWeb] を先にチェックしてください。
+  TargetPlatform? get current {
+    if (kIsWeb) return null;
+    return _overridePlatform ?? defaultTargetPlatform;
+  }
+
+  /// iOSプラットフォームかどうか
+  bool get isIOS => !isWeb && current == TargetPlatform.iOS;
+
+  /// Androidプラットフォームかどうか
+  bool get isAndroid => !isWeb && current == TargetPlatform.android;
+
+  // 他のプラットフォーム判定メソッドも同様に修正
+}
+```
+
+**Breaking Change**: `current`がnullableに変更されたため、既存コードで対応が必要。
+
+**影響範囲**: 実装コードでの使用箇所は1箇所のみ（`NotificationService.requestPermissions()`）で、null安全チェックを追加して対応済み。
+
+**修正ファイル**:
+- [lib/core/platform/platform_detector.dart](../../../core/platform/platform_detector.dart)
+- [lib/features/notifications/data/notification_service.dart](../../../features/notifications/data/notification_service.dart#L96-L101)
+- [test/core/platform/platform_detector_test.dart](../../../../test/core/platform/platform_detector_test.dart) (新規作成)
+
+#### 4. エラーハンドリングの追加
+
+**問題**: `showInstantNotification()`や`handleNotificationTapped()`にエラーハンドリングがない。
+
+**解決策**: try-catchを追加してエラーをログ出力し、アプリクラッシュを防ぐ。
+
+```dart
+// NotificationService.showInstantNotification()
+Future<void> showInstantNotification({
+  required int id,
+  required String title,
+  required String body,
+  required String path,
+}) async {
+  try {
+    // ... 通知表示処理 ...
+    await _plugin.show(id, title, body, notificationDetails, payload: path);
+  } on Exception catch (e, stackTrace) {
+    debugPrint('[ERROR] Failed to show notification (id: $id): $e');
+    debugPrint('Stack trace: $stackTrace');
+    // エラーをre-throwせず、ログ出力のみで継続
+  }
+}
+
+// NotificationNavigationHandler.handleNotificationTapped()
+void handleNotificationTapped(NotificationResponse response) {
+  final path = response.payload;
+  if (path == null || path.isEmpty) {
+    debugPrint('[WARNING] Empty payload in notification tap');
+    return;
+  }
+
+  try {
+    _navigator.navigateToPath(path);
+  } on Exception catch (e) {
+    debugPrint(
+      '[ERROR] Failed to navigate from notification tap: path=$path, error=$e',
+    );
+    // エラーをre-throwせず、ログ出力のみで継続
+  }
+}
+```
+
+**修正ファイル**:
+- [lib/features/notifications/data/notification_service.dart](../../../features/notifications/data/notification_service.dart#L149-L161)
+- [lib/features/notifications/handlers/notification_navigation_handler.dart](../../../features/notifications/handlers/notification_navigation_handler.dart#L27-L37)
+
+**テスト追加**:
+- [test/features/notifications/data/notification_service_test.dart](../../../../test/features/notifications/data/notification_service_test.dart#L253-L329)
+
+### テスト結果
+
+#### 静的解析
+
+```bash
+$ flutter analyze
+Analyzing sample_go_router_app...
+No issues found! (ran in 2.2s)
+```
+
+#### 単体テスト
+
+```bash
+$ flutter test
+...
+All tests passed! (35 tests)
+```
+
+**新規追加テスト**:
+- PlatformDetectorの単体テスト（9テスト）
+- NotificationServiceのエラーハンドリングテスト（2テスト）
+
+### 今後の課題
+
+#### バックグラウンド通知タップの制約
+
+現在の実装では、バックグラウンド通知タップ時にModalRoute判定ができません（AppNavigatorのロジックを使用できない）。将来的に以下の方法で改善できます：
+
+1. **ペイロードにメタデータを含める**
+   ```dart
+   payload: jsonEncode({'path': '/item/42', 'isModal': true})
+   ```
+
+2. **GoRouter拡張でModalRoute情報を取得**
+   - GoRouterのルート定義からModalRoute情報を抽出
+   - バックグラウンドハンドラーから参照可能な形で保持
+
+3. **Native側での画面遷移制御**
+   - Android/iOSのネイティブコードで遷移方法を制御
+   - より複雑だが柔軟性が高い
+
+#### Web専用通知実装
+
+将来的にWeb環境でも通知を表示したい場合、Web Notifications APIを使用した別実装を作成する必要があります。
