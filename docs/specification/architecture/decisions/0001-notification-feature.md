@@ -194,6 +194,7 @@ Future<AppBaseRoute?> pathToRoute(GoRouter router, String path) async {
 ```dart
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../../core/platform/platform_detector.dart';
 import '../handlers/notification_navigation_handler.dart';
 
 part 'notification_service.g.dart';
@@ -214,25 +215,25 @@ NotificationService notificationService(Ref ref) {
 class NotificationService {
   final FlutterLocalNotificationsPlugin _plugin;
   final NotificationNavigationHandler _navigationHandler;
-  final TargetPlatform? _platform;
 
   NotificationService({
     required FlutterLocalNotificationsPlugin plugin,
     required NotificationNavigationHandler navigationHandler,
-    TargetPlatform? platform,
   })  : _plugin = plugin,
-        _navigationHandler = navigationHandler,
-        _platform = platform;
+        _navigationHandler = navigationHandler;
 
   /// 初期化
   /// initSettingsは内部で定義（固定値）
   /// 通知タップ時の処理はNotificationNavigationHandlerに委譲
   Future<void> initialize() async {
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
+    // iOS権限リクエストは requestPermissions() で実施するため、ここでは無効化
     const iosSettings = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
     );
     const initSettings = InitializationSettings(
       android: androidSettings,
@@ -240,9 +241,12 @@ class NotificationService {
     );
 
     // 通知タップ時の処理はNotificationNavigationHandlerに委譲
+    // バックグラウンド/終了状態での通知タップはnotificationTapBackgroundで処理
     await _plugin.initialize(
       initSettings,
-      onDidReceiveNotificationResponse: _navigationHandler.handleNotificationTapped,
+      onDidReceiveNotificationResponse:
+          _navigationHandler.handleNotificationTapped,
+      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
     );
 
     await requestPermissions();
@@ -251,21 +255,24 @@ class NotificationService {
   /// 通知権限をリクエスト
   /// プラットフォームに応じて適切な権限リクエストを実行
   Future<void> requestPermissions() async {
-    final platform = _platform ?? defaultTargetPlatform;
+    // Webでは通知権限リクエストは不要
+    if (PlatformDetector.instance.isWeb) {
+      return;
+    }
+
+    final platform = PlatformDetector.instance.current;
 
     if (platform == TargetPlatform.iOS) {
       await _plugin
           .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          );
+            IOSFlutterLocalNotificationsPlugin
+          >()
+          ?.requestPermissions(alert: true, badge: true, sound: true);
     } else if (platform == TargetPlatform.android) {
       await _plugin
           .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin
+          >()
           ?.requestNotificationsPermission();
     }
   }
@@ -296,13 +303,7 @@ class NotificationService {
       iOS: iosDetails,
     );
 
-    await _plugin.show(
-      id,
-      title,
-      body,
-      notificationDetails,
-      payload: path,
-    );
+    await _plugin.show(id, title, body, notificationDetails, payload: path);
   }
 }
 ```
@@ -315,6 +316,7 @@ class NotificationService {
 **テスト可能性:**
 - `FlutterLocalNotificationsPlugin`をモック化可能（コンストラクタで注入）
 - `NotificationNavigationHandler`をモック化可能（コンストラクタで注入）
+- プラットフォーム判定は`PlatformDetector.instance.overridePlatform()`でテスト時に制御可能
 - すべて公開メソッド（プライベートメソッドなし）
 
 **バックグラウンド通知ハンドラー（将来の拡張）:**
@@ -1042,34 +1044,34 @@ Android 13 (API level 33) 以上では、POST_NOTIFICATIONS は危険権限（Da
 class NotificationService {
   final FlutterLocalNotificationsPlugin _plugin;
   final NotificationNavigationHandler _navigationHandler;
-  final TargetPlatform? _platform;
 
   NotificationService({
     required FlutterLocalNotificationsPlugin plugin,
     required NotificationNavigationHandler navigationHandler,
-    TargetPlatform? platform,  // テスト用に依存性注入可能
   }) : _plugin = plugin,
-       _navigationHandler = navigationHandler,
-       _platform = platform;
+       _navigationHandler = navigationHandler;
 
   /// 通知権限をリクエスト
   /// プラットフォームに応じて適切な権限リクエストを実行
   Future<void> requestPermissions() async {
-    final platform = _platform ?? defaultTargetPlatform;
+    // Webでは通知権限リクエストは不要
+    if (PlatformDetector.instance.isWeb) {
+      return;
+    }
+
+    final platform = PlatformDetector.instance.current;
 
     if (platform == TargetPlatform.iOS) {
       await _plugin
           .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          );
+            IOSFlutterLocalNotificationsPlugin
+          >()
+          ?.requestPermissions(alert: true, badge: true, sound: true);
     } else if (platform == TargetPlatform.android) {
       await _plugin
           .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin
+          >()
           ?.requestNotificationsPermission();
     }
   }
@@ -1099,14 +1101,15 @@ Future<void> initialize() async {
 - **単一メソッド化**: `requestIOSPermissions()` と `requestAndroidPermissions()` を分離するのではなく、単一の `requestPermissions()` メソッド内でプラットフォーム判定を行う設計に変更
   - 呼び出し側が複数のメソッドを意識する必要がなくなる
   - プラットフォーム判定ロジックが内部に集約される
-- **依存性注入**: `TargetPlatform` をコンストラクタで注入可能にすることで、単体テストでプラットフォーム分岐を検証可能
-  - 本番環境では `defaultTargetPlatform` を使用
-  - テスト環境では `TargetPlatform.iOS` や `TargetPlatform.android` を明示的に指定
+- **PlatformDetectorの使用**: プラットフォーム判定は`PlatformDetector`シングルトンを使用
+  - テスト時は `PlatformDetector.instance.overridePlatform()` でプラットフォームを制御可能
+  - 本番環境では `PlatformDetector.instance.current` が `defaultTargetPlatform` を返す
+  - Web判定は `PlatformDetector.instance.isWeb` で実施
 
 **教訓**:
 - Android 13+ では POST_NOTIFICATIONS が危険権限に昇格したため、実行時リクエストが必須
 - プラットフォーム判定ロジックは内部に隠蔽し、呼び出し側をシンプルに保つ
-- OS分岐は単体テストで検証できるよう、依存性注入を活用する
+- OS分岐は単体テストで検証できるよう、`PlatformDetector`のシングルトンパターンを活用
 - `resolvePlatformSpecificImplementation` は適切にプラットフォームを判定するため、追加の `Platform.isAndroid` 判定は不要
 - flutter_local_notifications パッケージは `requestNotificationsPermission()` メソッドを提供しているため、追加のパーミッションライブラリ（permission_handlerなど）は不要
 
