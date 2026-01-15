@@ -4,7 +4,7 @@
 
 ## 主な特徴
 
-- **Feature-First アーキテクチャ**: コードはレイヤーごとではなく、機能ごと (`auth`, `home`, `items`, `search`, `mypage`) に整理されています。
+- **Feature-First アーキテクチャ**: コードはレイヤーごとではなく、機能ごと (`auth`, `home`, `items`, `search`, `mypage`, `notifications`) に整理されています。
 - **型安全なナビゲーション**: `go_router_builder` (`TypedGoRoute`) を使用し、タイプセーフな遷移を実現しています。
 - **統一されたナビゲーションロジック（AppNavigatorの役割）**:
   - **最大の特徴**: 全ての画面遷移は `AppNavigator` クラスに集約されています。
@@ -16,6 +16,7 @@
   *補足: `AppNavigator` は `GoRouter` のインスタンスを直接保持しているため、`context` を介さずにこれらのメソッドを実行できます。*
 - **ボトムナビゲーション**: `StatefulShellRoute` を実装し、タブ（Home, Search, MyPage）の状態を保持して切り替え可能です。
 - **BuildContext への非依存**: ViewModel や Repository は `ref.read(appNavigatorProvider)` を使用して遷移を行うため、`BuildContext` を持ち回る必要がありません。
+- **ローカル通知**: `flutter_local_notifications` を使用し、通知タップから任意の画面へ遷移可能です。`AppNavigator.navigateToPath()` により、`BuildContext` なしで画面遷移を実現しています。
 
 ## アーキテクチャ構成
 
@@ -29,6 +30,7 @@
 - **`*_route.dart`**: ルート定義（例: `HomeRoute`）。
 - **`presentation/`**: Widget (`Page`) とロジック (`ViewModel`)。
 - **`data/`**: リポジトリなど（必要な場合）。
+- **`notifications/`**: ローカル通知機能。`NotificationService` と `NotificationNavigationHandler` を含みます。
 
 ## ナビゲーションパターン
 

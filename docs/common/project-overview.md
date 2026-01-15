@@ -24,6 +24,7 @@ GoRouterとRiverpodを使用した、堅牢で型安全な画面遷移アーキ�
   - `riverpod: ^3.0.3` - 状態管理
   - `go_router_builder: ^4.1.3` - 型安全なルーティング生成
   - `riverpod_generator: ^3.0.3` - Riverpodコード生成
+  - `flutter_local_notifications: ^17.2.3` - ローカル通知
 
 ## ディレクトリ構造
 
@@ -36,5 +37,6 @@ lib/
     ├── home/
     ├── items/
     ├── mypage/
+    ├── notifications/
     └── search/
 ```

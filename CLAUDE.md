@@ -29,3 +29,33 @@
   ```
 - 新機能追加時は、docs/implementation/how-to/add-feature.md の手順に従うこと
 - 画面遷移追加時は、docs/implementation/how-to/add-navigation.md の手順に従うこと
+
+## Plan Mode時のドキュメント作成ルール
+
+**必須**: Plan Modeで実装計画を作成する際は、必ず以下のルールに従うこと：
+
+1. **プラン文書の作成場所**
+   - `docs/specification/architecture/decisions/` 配下にADR（Architecture Decision Record）形式で保存
+   - ファイル名形式: `XXXX-{feature-name}.md` (例: `0001-notification-feature.md`)
+   - 連番は既存のADRファイルの次の番号を使用
+
+2. **ADR文書の構成**
+   - タイトル: `ADR-XXXX: {機能名}`
+   - 作成日とステータス（提案中/承認済み/却下）を明記
+   - 以下のセクションを含める：
+     - 概要
+     - ユーザー要件
+     - アーキテクチャ判断（配置場所、実装方法など）
+     - 実装ファイル一覧（新規/変更）
+     - 詳細設計（コード例を含む）
+     - プラットフォーム設定
+     - 実装順序
+     - 既存コードへの影響
+     - テスト計画
+     - 将来の拡張性
+     - 代替案（検討したが却下した選択肢）
+     - 参考資料
+
+3. **プラン承認のタイミング**
+   - ADR文書を作成してから ExitPlanMode を呼び出すこと
+   - ユーザーはADR文書を確認してから実装を承認する

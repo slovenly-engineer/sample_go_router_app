@@ -1,13 +1,8 @@
-import 'package:flutter/material.dart' hide ModalRoute;
-import 'package:go_router/go_router.dart';
+part of '../../core/router/router.dart';
 
-import 'package:sample_go_router_app/core/router/route_types.dart';
-import 'package:sample_go_router_app/features/items/presentation/item_detail_page.dart';
-
-part 'item_route.g.dart';
-
-@TypedGoRoute<ItemDetailRoute>(path: '/items/:id')
-class ItemDetailRoute extends ModalRoute with $ItemDetailRoute {
+// HomeRouteの下にネストするため、トップレベル定義はしないが、
+// GoRouterのBuilderで親子関係を作るため、クラス自体はHierarchyRouteを継承する。
+class ItemDetailRoute extends HierarchyRoute with $ItemDetailRoute {
   const ItemDetailRoute({required this.id});
   final String id;
 

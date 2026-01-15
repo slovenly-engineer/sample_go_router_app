@@ -13,12 +13,30 @@ RouteBase get $mainDataShellRoute => StatefulShellRouteData.$route(
   branches: [
     StatefulShellBranchData.$branch(
       routes: [
-        GoRouteData.$route(path: '/home', factory: $HomeRoute._fromState),
+        GoRouteData.$route(
+          path: '/home',
+          factory: $HomeRoute._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'items/:id',
+              factory: $ItemDetailRoute._fromState,
+            ),
+          ],
+        ),
       ],
     ),
     StatefulShellBranchData.$branch(
       routes: [
-        GoRouteData.$route(path: '/search', factory: $SearchRoute._fromState),
+        GoRouteData.$route(
+          path: '/search',
+          factory: $SearchRoute._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'filter',
+              factory: $FilterRoute._fromState,
+            ),
+          ],
+        ),
       ],
     ),
     StatefulShellBranchData.$branch(
@@ -63,11 +81,55 @@ mixin $HomeRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
+mixin $ItemDetailRoute on GoRouteData {
+  static ItemDetailRoute _fromState(GoRouterState state) =>
+      ItemDetailRoute(id: state.pathParameters['id']!);
+
+  ItemDetailRoute get _self => this as ItemDetailRoute;
+
+  @override
+  String get location =>
+      GoRouteData.$location('/home/items/${Uri.encodeComponent(_self.id)}');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
 mixin $SearchRoute on GoRouteData {
   static SearchRoute _fromState(GoRouterState state) => const SearchRoute();
 
   @override
   String get location => GoRouteData.$location('/search');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $FilterRoute on GoRouteData {
+  static FilterRoute _fromState(GoRouterState state) => const FilterRoute();
+
+  @override
+  String get location => GoRouteData.$location('/search/filter');
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -169,4 +231,4 @@ final class GoRouterProvider
   }
 }
 
-String _$goRouterHash() => r'ebe8627b1013f55acb51cccdd167c47de9a5dfb7';
+String _$goRouterHash() => r'716bc56fc78083fabf2a3200ef02f6897e6a7bdc';

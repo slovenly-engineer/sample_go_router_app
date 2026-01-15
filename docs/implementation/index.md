@@ -1,6 +1,6 @@
 # 実装支援ドキュメント索引
 
-最終更新: 2026-01-12
+最終更新: 2026-01-14
 
 ## 概要
 
@@ -22,6 +22,10 @@
 - [新機能追加手順](how-to/add-feature.md)
 - [画面遷移追加手順](how-to/add-navigation.md)
 - [セットアップ手順](how-to/setup.md)
+
+### 機能別実装ガイド
+
+- [通知機能（ADR-0001）](../specification/architecture/decisions/0001-notification-feature.md) - flutter_local_notifications の導入と画面遷移
 
 ### 実装パターン
 
