@@ -42,6 +42,8 @@ class PlatformDetector {
   ///
   /// [platform] が null の場合は上書きを解除し、実際のプラットフォームに戻る
   @visibleForTesting
+  // setterに変更すると対応するgetterがない警告が出るため、メソッドとして定義
+  // ignore: use_setters_to_change_properties
   void overridePlatform(TargetPlatform? platform) {
     _overridePlatform = platform;
   }
