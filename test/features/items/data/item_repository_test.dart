@@ -19,9 +19,7 @@ void main() {
 
     final container = ProviderContainer(
       overrides: [appNavigatorProvider.overrideWithValue(mockNavigator)],
-    );
-
-    container.listen(itemRepositoryProvider, (_, _) {});
+    )..listen(itemRepositoryProvider, (_, _) {});
 
     final repository = container.read(itemRepositoryProvider);
 

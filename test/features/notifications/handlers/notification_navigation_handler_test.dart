@@ -55,7 +55,6 @@ void main() {
       // 準備
       const response = NotificationResponse(
         id: 1,
-        payload: null,
         notificationResponseType: NotificationResponseType.selectedNotification,
       );
 

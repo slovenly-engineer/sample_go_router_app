@@ -216,7 +216,7 @@ void main() {
               >(),
         ).thenReturn(mockAndroidPlugin);
         when(
-          () => mockAndroidPlugin.requestNotificationsPermission(),
+          mockAndroidPlugin.requestNotificationsPermission,
         ).thenAnswer((_) async => true);
 
         // 実行
@@ -224,7 +224,7 @@ void main() {
 
         // 検証
         verify(
-          () => mockAndroidPlugin.requestNotificationsPermission(),
+          mockAndroidPlugin.requestNotificationsPermission,
         ).called(1);
       });
 
