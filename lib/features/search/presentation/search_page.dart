@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:sample_go_router_app/core/router/app_navigator.dart';
-import 'package:sample_go_router_app/features/search/filter_route.dart';
+import 'package:sample_go_router_app/core/router/router.dart';
 
 class SearchPage extends ConsumerWidget {
   const SearchPage({super.key});
