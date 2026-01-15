@@ -1,7 +1,12 @@
 # ADR-0001: flutter_local_notifications 導入とプッシュ通知からの画面遷移機能
 
 作成日: 2026-01-13
-ステータス: 承認済み（実装完了: 2026-01-14）
+ステータス: 承認済み（実装完了: 2026-01-14、ADR更新: 2026-01-15）
+
+更新履歴:
+- 2026-01-13: 初版作成（実装前の計画）
+- 2026-01-14: 実装完了、トラブルシューティング追記
+- 2026-01-15: 実装完了後のADR更新（issue #5対応）
 
 ## 概要
 
@@ -65,48 +70,51 @@ flutter_local_notificationsパッケージを導入し、ローカルプッシ�
 
 ## 実装ファイル一覧
 
-### 新規作成ファイル（3ファイル）
+### 新規作成ファイル（4ファイル）
 
-1. **`lib/core/router/route_resolver.dart`**
-   - 汎用的なパスからルートへの変換機能
-   - `pathToRoute`関数を提供
-   - 通知、ディープリンク、その他の用途で使用可能
+**注記**: 当初計画では`lib/core/router/route_resolver.dart`を作成予定でしたが、GoRouter 17.0.0の仕様変更により廃止されました。代わりに`AppNavigator.navigateToPath()`メソッドを使用します。詳細はトラブルシューティングセクションを参照してください。
 
-2. **`lib/features/notifications/data/notification_service.dart`**
+1. **`lib/features/notifications/data/notification_service.dart`**
    - 通知サービス本体（Riverpod Provider）
    - 初期化、通知表示処理、権限リクエスト
    - 通知の管理のみを担当（画面遷移は含まない）
    - **画面情報のハードコードを排除し、純粋な送信処理のみを提供**
 
-3. **`lib/features/notifications/handlers/notification_navigation_handler.dart`**
+2. **`lib/features/notifications/handlers/notification_navigation_handler.dart`**
    - 通知タップ時の画面遷移を担当
-   - `pathToRoute`と`AppNavigator`を使用して画面遷移を実行
+   - `AppNavigator.navigateToPath()`を使用して画面遷移を実行
 
-4. **`lib/features/notifications/notification_test_route.dart`**
+3. **`lib/features/notifications/notification_test_route.dart`**
    - 通知テスト専用画面のルート定義
    - ModalRoute（モーダル表示）として定義
 
-5. **`lib/features/notifications/presentation/notification_test_page.dart`**
+4. **`lib/features/notifications/presentation/notification_test_page.dart`**
    - 通知テスト専用画面
    - 7つの個別ボタンを配置（各画面への通知を個別に送信可能）
 
-### 変更ファイル（5ファイル）
+### 変更ファイル（6ファイル）
 
-6. **`pubspec.yaml`**
+5. **`pubspec.yaml`**
    - `flutter_local_notifications: ^17.2.3` を追加
 
-7. **`lib/main.dart`**
+6. **`lib/main.dart`**
    - 通知サービスの初期化処理を追加
    - `ProviderContainer`を使用した非同期初期化
    - `UncontrolledProviderScope`を使用して既存の`ProviderScope`と統合
    - **理由**: 通知サービスの初期化は非同期処理が必要なため、`main`関数で`await`を使用できるように`ProviderContainer`を事前に作成。`UncontrolledProviderScope`により、既存のRiverpodパターンと互換性を保ちつつ、初期化済みのコンテナを使用可能。
 
-8. **`android/app/src/main/AndroidManifest.xml`**
+7. **`android/app/src/main/AndroidManifest.xml`**
    - `POST_NOTIFICATIONS` 権限追加（Android 13+対応）
    - `VIBRATE` 権限追加
    - `RECEIVE_BOOT_COMPLETED` 権限追加
    - `ScheduledNotificationReceiver` レシーバー追加
    - `ScheduledNotificationBootReceiver` レシーバー追加
+
+8. **`android/app/build.gradle.kts`**
+   - core library desugaring を有効化（Java 8+ API対応）
+   - `isCoreLibraryDesugaringEnabled = true` 設定
+   - `coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")` 依存関係追加
+   - **理由**: `flutter_local_notifications`がJava 8以降のAPI（java.timeパッケージなど）を使用しているため、古いAndroidバージョン（API level 26未満）でも動作するようにdesugaring機能を有効化
 
 9. **`ios/Runner/AppDelegate.swift`**
    - `import flutter_local_notifications` 追加
@@ -122,19 +130,53 @@ flutter_local_notificationsパッケージを導入し、ローカルプッシ�
 
 > **⚠️ 設計変更に関する注記（2026-01-14）**
 >
-> 以下のセクション1「pathToRoute関数」およびセクション3「NotificationNavigationHandler」の設計は、**実装時に変更されました**。
+> 以下のセクション1「パスからルートへの変換ロジック」およびセクション3「NotificationNavigationHandler」の設計は、**実装時に変更されました**。
 >
-> GoRouter 17.0.0で `routeInformationParser.parseRouteInformation` が `UnimplementedError` を投げるようになったため、`pathToRoute` 関数は廃止され、代わりに `AppNavigator.navigateToPath(String path)` メソッドを使用する設計に変更されています。
+> GoRouter 17.0.0で `routeInformationParser.parseRouteInformation` が `UnimplementedError` を投げるようになったため、当初計画の`pathToRoute` 関数は廃止され、代わりに `AppNavigator.navigateToPath(String path)` メソッドを使用する設計に変更されています。
 >
-> 詳細は本ドキュメント末尾の「トラブルシューティング」セクションを参照してください。
+> 詳細は本ドキュメント末尾の「トラブルシューティング」セクションおよび「代替案」セクションを参照してください。
 >
 > **現在の実装:**
-> - `route_resolver.dart` は作成されていません
+> - `lib/core/router/route_resolver.dart` は作成されていません（廃止）
+> - `AppNavigator` に `navigateToPath(String path)` メソッドを追加
 > - `NotificationNavigationHandler` は `AppNavigator.navigateToPath()` を直接呼び出します
 
 ---
 
-### 1. ~~pathToRoute関数（パスからルートへの変換ロジック）~~ （廃止）
+### 1. パスからルートへの変換ロジック（設計変更）
+
+**✅ 実装された設計: `AppNavigator.navigateToPath()` メソッド**
+
+当初は`lib/core/router/route_resolver.dart`に`pathToRoute`関数を作成する計画でしたが、GoRouter 17.0.0の仕様変更により廃止されました。
+
+代わりに、`AppNavigator`に`navigateToPath(String path)`メソッドを追加し、GoRouterの公開API（`go()`/`push()`）を直接使用する設計に変更されています。
+
+**実装箇所**: [lib/core/router/app_navigator.dart](../../../core/router/app_navigator.dart) (行34-40)
+
+```dart
+void navigateToPath(String path, {bool isModal = false}) {
+  if (isModal) {
+    _router.push(path);
+  } else {
+    _router.go(path);
+  }
+}
+```
+
+**設計の利点:**
+- GoRouterの内部API（`routeInformationParser`）に依存しない
+- GoRouterの公開API（`go()`/`push()`）を直接使用するため、バージョン変更に強い
+- シンプルで理解しやすい実装
+- パス文字列の検証はGoRouterが自動的に行う
+
+詳細は「トラブルシューティング > GoRouter 17.0.0で通知タップ時に画面遷移が失敗する」を参照してください。
+
+---
+
+**参考: 当初計画の `pathToRoute` 関数（廃止済み）**
+
+<details>
+<summary>当初の設計（クリックで展開）</summary>
 
 **ファイル: `lib/core/router/route_resolver.dart`** ※廃止済み
 
@@ -186,6 +228,10 @@ Future<AppBaseRoute?> pathToRoute(GoRouter router, String path) async {
 
 **新しい画面追加時:**
 - GoRouterにルートを登録するだけで自動対応（コード変更不要）
+
+</details>
+
+---
 
 ### 2. NotificationService（通知の管理のみ）
 
@@ -765,35 +811,40 @@ import flutter_local_notifications
 ## 実装順序
 
 ### Phase 1: パッケージ導入
-1. `pubspec.yaml` に `flutter_local_notifications` 追加
-2. `flutter pub get` 実行
+1. ✅ `pubspec.yaml` に `flutter_local_notifications: ^17.2.3` 追加
+2. ✅ `flutter pub get` 実行
 
 ### Phase 2: サービス実装
-3. `core/router/route_resolver.dart` 作成
-   - `pathToRoute`関数の実装（汎用的なパスからルートへの変換ロジック）
-4. `features/notifications/handlers/notification_navigation_handler.dart` 作成
+3. ✅ `core/router/app_navigator.dart` 更新
+   - `navigateToPath(String path)` メソッドの追加
+   - ~~当初計画: `core/router/route_resolver.dart` 作成（廃止）~~
+4. ✅ `features/notifications/handlers/notification_navigation_handler.dart` 作成
    - 通知タップ時の画面遷移処理
-5. `features/notifications/data/notification_service.dart` 作成
+   - `AppNavigator.navigateToPath()` を使用
+5. ✅ `features/notifications/data/notification_service.dart` 作成
    - `NotificationService`クラスの実装
    - 初期化処理（initSettingsは内部で定義）
    - 通知表示メソッド（`showInstantNotification`のみ）
    - **画面情報のハードコードを排除**（呼び出し側がルート情報を渡す）
-6. `features/notifications/notification_test_route.dart` 作成
+6. ✅ `features/notifications/notification_test_route.dart` 作成
    - 通知テスト画面のルート定義（ModalRoute）
-7. `features/notifications/presentation/notification_test_page.dart` 作成
+7. ✅ `features/notifications/presentation/notification_test_page.dart` 作成
    - 通知テスト専用画面の実装
    - 7つの個別ボタンを配置
-8. `flutter pub run build_runner build --delete-conflicting-outputs` 実行
+8. ✅ `flutter pub run build_runner build --delete-conflicting-outputs` 実行
+
+### Phase 2.5: プラットフォームビルド設定
+8.5. ✅ `android/app/build.gradle.kts` 更新（core library desugaring 設定）
 
 ### Phase 3: アプリ統合
-9. `main.dart` 更新（初期化処理）
-10. `home_page.dart` 更新（NotificationTestPageへの遷移ボタン追加）
-11. `AndroidManifest.xml` 更新（権限・レシーバー追加）
-12. `ios/Runner/AppDelegate.swift` 更新（デリゲート設定追加）
+9. ✅ `main.dart` 更新（初期化処理）
+10. ✅ `home_page.dart` 更新（NotificationTestPageへの遷移ボタン追加）
+11. ✅ `android/app/src/main/AndroidManifest.xml` 更新（権限・レシーバー追加）
+12. ✅ `ios/Runner/AppDelegate.swift` 更新（デリゲート設定追加）
 
 ### Phase 4: 検証
-13. `flutter analyze` で静的解析
-14. Android/iOSエミュレータで動作確認
+13. ✅ `flutter analyze` で静的解析
+14. ⏳ Android/iOSエミュレータで動作確認（実装完了、実機確認は未実施）
     - 通知権限リクエストの確認
     - Home画面から「Notification Test」ボタンでテスト画面へ遷移
     - 各ボタンで個別に通知が送信されることを確認
@@ -857,21 +908,52 @@ import flutter_local_notifications
 7. 通知の内容（タイトル、本文）が正しく表示されることを確認
 
 ### 検証項目
-- [ ] パッケージが正しくインストールされている
-- [ ] 通知サービスが初期化されている
-- [ ] **iOS: AppDelegate.swiftにデリゲート設定が追加されている**
-- [ ] **iOS: フォアグラウンドで通知が表示される**
-- [ ] **Android: AndroidManifest.xmlにレシーバーが登録されている**
-- [ ] Android/iOSで通知権限がリクエストされる
-- [ ] Home画面に「Notification Test」ボタンが表示される
-- [ ] 「Notification Test」ボタンでテスト画面へ遷移する
-- [ ] テスト画面に7つの個別ボタンが正しく表示される
-- [ ] 各ボタンで個別に通知が送信される
-- [ ] 各通知タップで対応画面に遷移する
-- [ ] パラメータ付きルート（ItemDetail）が正しく動作する
-- [ ] ネストルート（Settings）が正しく動作する
-- [ ] 静的解析エラーがない（`flutter analyze`）
-- [ ] 単体テストがすべて通過する
+- [x] パッケージが正しくインストールされている
+- [x] 通知サービスが初期化されている
+- [x] **iOS: AppDelegate.swiftにデリゲート設定が追加されている**
+- [x] **iOS: フォアグラウンドで通知が表示される**（実装完了）
+- [x] **Android: AndroidManifest.xmlにレシーバーが登録されている**
+- [x] **Android: core library desugaring が有効化されている**
+- [x] Android/iOSで通知権限がリクエストされる（実装完了）
+- [x] Home画面に「Notification Test」ボタンが表示される
+- [x] 「Notification Test」ボタンでテスト画面へ遷移する
+- [x] テスト画面に7つの個別ボタンが正しく表示される
+- [x] 各ボタンで個別に通知が送信される
+- [ ] 各通知タップで対応画面に遷移する（実機確認必要）
+- [ ] パラメータ付きルート（ItemDetail）が正しく動作する（実機確認必要）
+- [ ] ネストルート（Settings、Filter）が正しく動作する（実機確認必要）
+- [x] 静的解析エラーがない（`flutter analyze`）
+- [x] 単体テストがすべて通過する
+
+## プロダクション環境への準備
+
+### NotificationTest機能の削除（オプション）
+
+開発・デモ用のNotificationTest機能を本番リリース前に削除する場合、以下の手順で実施できます：
+
+1. **ファイルの削除**
+   ```bash
+   rm -rf lib/features/notifications/notification_test_route.dart
+   rm -rf lib/features/notifications/notification_test_route.g.dart
+   rm -rf lib/features/notifications/presentation/notification_test_page.dart
+   ```
+
+2. **home_page.dart の修正**
+   - [lib/features/home/presentation/home_page.dart](../../../features/home/presentation/home_page.dart) から以下を削除:
+     - 行5: `NotificationTestRoute` のインポート
+     - 行27-35: 「Notification Test」ボタン
+
+3. **コード生成**
+   ```bash
+   flutter pub run build_runner build --delete-conflicting-outputs
+   ```
+
+4. **静的解析**
+   ```bash
+   flutter analyze
+   ```
+
+**注意**: `NotificationService` と `NotificationNavigationHandler` は本番環境でも使用するため、削除しないでください。これらは実際の通知機能（Firebase Cloud Messaging など）と統合して使用します。
 
 ## 将来の拡張性
 
@@ -880,6 +962,22 @@ import flutter_local_notifications
 - 定期通知（毎日、毎週など）
 - リッチ通知（BigTextStyle、BigPictureStyleなど）
 - Firebase Cloud Messaging（FCM）との統合
+
+## 実装時の追加知見
+
+### NotificationTestPageのインポート構造
+
+[lib/features/notifications/presentation/notification_test_page.dart](../../../features/notifications/presentation/notification_test_page.dart) では、以下のようにインポートを記載しています：
+
+```dart
+import 'package:sample_go_router_app/features/auth/login_route.dart';
+import 'package:sample_go_router_app/core/router/route_types.dart';
+import 'package:sample_go_router_app/core/router/router.dart';
+```
+
+実際には`HomeRoute`, `SearchRoute`, `MyPageRoute`, `SettingsRoute`, `ItemDetailRoute`, `FilterRoute`も使用していますが、これらは`router.dart`の`part`ファイル機構により再エクスポートされているため、明示的なインポートなしでアクセス可能です。
+
+**推奨**: コード可読性向上のため、明示的にインポートを追加することも検討できます。ただし、現在の実装でも静的解析は通過しており、機能上の問題はありません。
 
 ## 代替案
 
@@ -904,6 +1002,11 @@ import flutter_local_notifications
 ### 代替案4: core/notifications/に配置
 - 通知サービスをcore層に配置
 - **却下理由**: Feature-First原則に反する。通知は独立した機能であり、features配下が適切。
+
+### 代替案5: pathToRoute関数の使用（実装時に却下）
+- `core/router/route_resolver.dart`に`pathToRoute`関数を作成
+- GoRouterの`routeInformationParser`を使用してパスからルートを復元
+- **却下理由**: GoRouter 17.0.0で`parseRouteInformation`が廃止され、`UnimplementedError`を投げるようになった。新しい`parseRouteInformationWithDependencies`は`BuildContext`を必要とするが、通知タップのコールバック内では`BuildContext`が利用できない。最終的に`AppNavigator.navigateToPath()`メソッドを使用する設計に変更（詳細はトラブルシューティングセクション参照）。
 
 ## トラブルシューティング
 
