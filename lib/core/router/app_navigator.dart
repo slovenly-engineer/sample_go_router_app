@@ -18,10 +18,10 @@ class AppNavigator {
 
   /// 画面遷移を実行
   /// ルートの型（階層かモーダルか）によって go/push を自動判別
-  void navigateTo(AppBaseRoute route) {
+  Future<void> navigateTo(AppBaseRoute route) async {
     if (route is ModalRoute) {
       // モーダル/ダイアログ的な画面はスタックに積む
-      _router.push(route.location);
+      await _router.push(route.location);
     } else {
       // 階層/主要画面は go で遷移（デフォルト）
       // HierarchyRoute もこちらに含まれる
@@ -31,9 +31,9 @@ class AppNavigator {
 
   /// パス文字列を使用して画面遷移を実行
   /// 通知タップなど、BuildContextが利用できない場合に使用
-  void navigateToPath(String path, {bool isModal = false}) {
+  Future<void> navigateToPath(String path, {bool isModal = false}) async {
     if (isModal) {
-      _router.push(path);
+      await _router.push(path);
     } else {
       _router.go(path);
     }

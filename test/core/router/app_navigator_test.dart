@@ -57,24 +57,24 @@ void main() {
     });
 
     group('navigateTo', () {
-      test('HierarchyRouteの場合はgo()が呼ばれること', () {
+      test('HierarchyRouteの場合はgo()が呼ばれること', () async {
         // 準備
         const route = TestHierarchyRoute();
 
         // 実行
-        navigator.navigateTo(route);
+        await navigator.navigateTo(route);
 
         // 検証
         verify(() => mockRouter.go('/test-hierarchy')).called(1);
         verifyNever(() => mockRouter.push<Object?>(any()));
       });
 
-      test('ModalRouteの場合はpush()が呼ばれること', () {
+      test('ModalRouteの場合はpush()が呼ばれること', () async {
         // 準備
         const route = TestModalRoute();
 
         // 実行
-        navigator.navigateTo(route);
+        await navigator.navigateTo(route);
 
         // 検証
         verify(() => mockRouter.push<Object?>('/test-modal')).called(1);
@@ -83,27 +83,27 @@ void main() {
     });
 
     group('navigateToPath', () {
-      test('isModal=falseの場合はgo()が呼ばれること', () {
+      test('isModal=falseの場合はgo()が呼ばれること', () async {
         // 実行
-        navigator.navigateToPath('/home');
+        await navigator.navigateToPath('/home');
 
         // 検証
         verify(() => mockRouter.go('/home')).called(1);
         verifyNever(() => mockRouter.push<Object?>(any()));
       });
 
-      test('isModal=trueの場合はpush()が呼ばれること', () {
+      test('isModal=trueの場合はpush()が呼ばれること', () async {
         // 実行
-        navigator.navigateToPath('/detail', isModal: true);
+        await navigator.navigateToPath('/detail', isModal: true);
 
         // 検証
         verify(() => mockRouter.push<Object?>('/detail')).called(1);
         verifyNever(() => mockRouter.go(any()));
       });
 
-      test('パラメータ付きパスでgo()が呼ばれること', () {
+      test('パラメータ付きパスでgo()が呼ばれること', () async {
         // 実行
-        navigator.navigateToPath('/items/42');
+        await navigator.navigateToPath('/items/42');
 
         // 検証
         verify(() => mockRouter.go('/items/42')).called(1);
