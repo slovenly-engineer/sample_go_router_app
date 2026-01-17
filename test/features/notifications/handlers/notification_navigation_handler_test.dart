@@ -18,6 +18,9 @@ void main() {
 
     setUp(() {
       mockNavigator = MockAppNavigator();
+      when(
+        () => mockNavigator.navigateToPath<void>(any()),
+      ).thenAnswer((_) async {});
       handler = NotificationNavigationHandler(navigator: mockNavigator);
     });
 
@@ -33,7 +36,7 @@ void main() {
       handler.handleNotificationTapped(response);
 
       // 検証
-      verify(() => mockNavigator.navigateToPath('/home')).called(1);
+      verify(() => mockNavigator.navigateToPath<void>('/home')).called(1);
     });
 
     test('空のペイロードでは遷移しないこと', () {
@@ -48,7 +51,7 @@ void main() {
       handler.handleNotificationTapped(response);
 
       // 検証
-      verifyNever(() => mockNavigator.navigateToPath(any()));
+      verifyNever(() => mockNavigator.navigateToPath<void>(any()));
     });
 
     test('nullのペイロードでは遷移しないこと', () {
@@ -62,7 +65,7 @@ void main() {
       handler.handleNotificationTapped(response);
 
       // 検証
-      verifyNever(() => mockNavigator.navigateToPath(any()));
+      verifyNever(() => mockNavigator.navigateToPath<void>(any()));
     });
 
     test('パラメータ付きパスで遷移が実行されること', () {
@@ -77,7 +80,7 @@ void main() {
       handler.handleNotificationTapped(response);
 
       // 検証
-      verify(() => mockNavigator.navigateToPath('/items/42')).called(1);
+      verify(() => mockNavigator.navigateToPath<void>('/items/42')).called(1);
     });
   });
 }

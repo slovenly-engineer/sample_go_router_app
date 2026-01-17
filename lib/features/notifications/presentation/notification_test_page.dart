@@ -96,7 +96,7 @@ class NotificationTestPage extends ConsumerWidget {
     required int id,
     required String title,
     required String body,
-    required AppBaseRoute route,
+    required AppBaseRoute<void> route,
     required IconData icon,
   }) {
     return ElevatedButton.icon(

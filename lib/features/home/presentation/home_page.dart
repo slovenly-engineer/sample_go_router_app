@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_go_router_app/core/router/app_navigator.dart';
@@ -18,17 +20,22 @@ class HomePage extends ConsumerWidget {
             const Text('Home Page'),
             ElevatedButton(
               onPressed: () {
-                // Example navigation
-                ref.read(homeViewModelProvider.notifier).onItemSelected('123');
+                unawaited(
+                  ref
+                      .read(homeViewModelProvider.notifier)
+                      .onItemSelected('123'),
+                );
               },
               child: const Text('Go to Item 123'),
             ),
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
-                ref
-                    .read(appNavigatorProvider)
-                    .navigateTo(const NotificationTestRoute());
+                unawaited(
+                  ref
+                      .read(appNavigatorProvider)
+                      .navigateTo(const NotificationTestRoute()),
+                );
               },
               icon: const Icon(Icons.notifications),
               label: const Text('Notification Test'),
