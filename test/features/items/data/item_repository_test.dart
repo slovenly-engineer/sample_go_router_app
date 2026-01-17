@@ -16,6 +16,7 @@ void main() {
   test('401エラー時にログイン画面へ遷移すること', () async {
     // 準備
     final mockNavigator = MockAppNavigator();
+    when(() => mockNavigator.navigateTo<void>(any())).thenAnswer((_) async {});
 
     final container = ProviderContainer(
       overrides: [appNavigatorProvider.overrideWithValue(mockNavigator)],
@@ -28,7 +29,7 @@ void main() {
 
     // 検証
     verify(
-      () => mockNavigator.navigateTo(any(that: isA<LoginRoute>())),
+      () => mockNavigator.navigateTo<void>(any(that: isA<LoginRoute>())),
     ).called(1);
   });
 }

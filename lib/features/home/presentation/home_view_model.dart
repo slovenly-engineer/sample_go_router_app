@@ -9,7 +9,7 @@ class HomeViewModel extends _$HomeViewModel {
   @override
   void build() {}
 
-  void onItemSelected(String id) {
-    ref.read(appNavigatorProvider).navigateTo(ItemDetailRoute(id: id));
+  Future<void> onItemSelected(String id) {
+    return ref.read(appNavigatorProvider).navigateTo(ItemDetailRoute(id: id));
   }
 }

@@ -6,7 +6,8 @@ import 'package:sample_go_router_app/features/notifications/presentation/notific
 part 'notification_test_route.g.dart';
 
 @TypedGoRoute<NotificationTestRoute>(path: '/notification-test')
-class NotificationTestRoute extends ModalRoute with $NotificationTestRoute {
+class NotificationTestRoute extends ModalRoute<void>
+    with $NotificationTestRoute {
   const NotificationTestRoute();
 
   @override
