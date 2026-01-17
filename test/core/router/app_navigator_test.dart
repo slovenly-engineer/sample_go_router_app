@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -13,9 +15,21 @@ class MockGoRouter extends Mock implements GoRouter {
   /// 直接スタブ化できない。そのため手動でオーバーライドし、呼び出しを記録する。
   final List<Object?> popCalls = [];
 
+  /// pushの呼び出しを記録するためのリスト
+  ///
+  /// GoRouter.push もジェネリクスメソッドのため、Mocktail の when/verify で
+  /// 直接スタブ化できない。そのため手動でオーバーライドし、呼び出しを記録する。
+  final List<String> pushCalls = [];
+
   @override
   void pop<T extends Object?>([T? result]) {
     popCalls.add(result);
+  }
+
+  @override
+  Future<T?> push<T extends Object?>(String location, {Object? extra}) {
+    pushCalls.add(location);
+    return Future<T?>.value();
   }
 }
 
@@ -32,7 +46,7 @@ class TestHierarchyRoute extends route_types.HierarchyRoute {
 }
 
 // テスト用のModalRoute
-class TestModalRoute extends route_types.ModalRoute {
+class TestModalRoute extends route_types.ModalRoute<void> {
   const TestModalRoute();
 
   @override
@@ -51,9 +65,6 @@ void main() {
     setUp(() {
       mockRouter = MockGoRouter();
       navigator = AppNavigator(mockRouter);
-
-      // デフォルトのスタブ設定
-      when(() => mockRouter.push<Object?>(any())).thenAnswer((_) async => null);
     });
 
     group('navigateTo', () {
@@ -62,11 +73,11 @@ void main() {
         const route = TestHierarchyRoute();
 
         // 実行
-        navigator.navigateTo(route);
+        unawaited(navigator.navigateTo(route));
 
         // 検証
         verify(() => mockRouter.go('/test-hierarchy')).called(1);
-        verifyNever(() => mockRouter.push<Object?>(any()));
+        expect(mockRouter.pushCalls, isEmpty);
       });
 
       test('ModalRouteの場合はpush()が呼ばれること', () {
@@ -74,10 +85,11 @@ void main() {
         const route = TestModalRoute();
 
         // 実行
-        navigator.navigateTo(route);
+        unawaited(navigator.navigateTo(route));
 
         // 検証
-        verify(() => mockRouter.push<Object?>('/test-modal')).called(1);
+        expect(mockRouter.pushCalls, hasLength(1));
+        expect(mockRouter.pushCalls.single, equals('/test-modal'));
         verifyNever(() => mockRouter.go(any()));
       });
     });
@@ -85,25 +97,26 @@ void main() {
     group('navigateToPath', () {
       test('isModal=falseの場合はgo()が呼ばれること', () {
         // 実行
-        navigator.navigateToPath('/home');
+        unawaited(navigator.navigateToPath<void>('/home'));
 
         // 検証
         verify(() => mockRouter.go('/home')).called(1);
-        verifyNever(() => mockRouter.push<Object?>(any()));
+        expect(mockRouter.pushCalls, isEmpty);
       });
 
       test('isModal=trueの場合はpush()が呼ばれること', () {
         // 実行
-        navigator.navigateToPath('/detail', isModal: true);
+        unawaited(navigator.navigateToPath<void>('/detail', isModal: true));
 
         // 検証
-        verify(() => mockRouter.push<Object?>('/detail')).called(1);
+        expect(mockRouter.pushCalls, hasLength(1));
+        expect(mockRouter.pushCalls.single, equals('/detail'));
         verifyNever(() => mockRouter.go(any()));
       });
 
       test('パラメータ付きパスでgo()が呼ばれること', () {
         // 実行
-        navigator.navigateToPath('/items/42');
+        unawaited(navigator.navigateToPath<void>('/items/42'));
 
         // 検証
         verify(() => mockRouter.go('/items/42')).called(1);
