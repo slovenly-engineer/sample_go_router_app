@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -28,7 +30,8 @@ class NotificationNavigationHandler {
 
     try {
       // パス文字列から直接遷移（GoRouterが有効なパスか検証）
-      _navigator.navigateToPath(path);
+      // navigateTo は Future を返すが、ここでは結果を待たない（fire-and-forget）
+      unawaited(_navigator.navigateToPath<void>(path));
     } on Exception catch (e) {
       debugPrint(
         '[ERROR] Failed to navigate from notification tap: path=$path, error=$e',

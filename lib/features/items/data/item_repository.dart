@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:sample_go_router_app/core/router/app_navigator.dart';
@@ -26,7 +28,10 @@ class ItemRepository {
       if (e.toString().contains('401')) {
         // 【重要】ここで初めてNavigatorを取得する
         // これにより初期化時の循環参照を防ぐ
-        _ref.read(appNavigatorProvider).navigateTo(const LoginRoute());
+        // navigateTo は Future を返すが、ここでは結果を待たない（fire-and-forget）
+        unawaited(
+          _ref.read(appNavigatorProvider).navigateTo(const LoginRoute()),
+        );
       }
     }
   }
