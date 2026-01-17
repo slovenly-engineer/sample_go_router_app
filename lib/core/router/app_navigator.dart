@@ -18,24 +18,29 @@ class AppNavigator {
 
   /// 画面遷移を実行
   /// ルートの型（階層かモーダルか）によって go/push を自動判別
-  void navigateTo(AppBaseRoute route) {
-    if (route is ModalRoute) {
+  /// Tは画面を閉じた時の結果型。HierarchyRouteの場合はnullを返す。
+  Future<T?> navigateTo<T>(AppBaseRoute<T> route) {
+    if (route is ModalRoute<T>) {
       // モーダル/ダイアログ的な画面はスタックに積む
-      _router.push(route.location);
+      // push() の Future<T?> を返す
+      return _router.push<T>(route.location);
     } else {
       // 階層/主要画面は go で遷移（デフォルト）
-      // HierarchyRoute もこちらに含まれる
+      // HierarchyRoute の場合、T は void なので null を返す
       _router.go(route.location);
+      return Future<T?>.value();
     }
   }
 
   /// パス文字列を使用して画面遷移を実行
   /// 通知タップなど、BuildContextが利用できない場合に使用
-  void navigateToPath(String path, {bool isModal = false}) {
+  /// isModal=trueの場合は結果を受け取れる
+  Future<T?> navigateToPath<T>(String path, {bool isModal = false}) {
     if (isModal) {
-      _router.push(path);
+      return _router.push<T>(path);
     } else {
       _router.go(path);
+      return Future<T?>.value();
     }
   }
 
