@@ -31,6 +31,11 @@ MD3コンポーネントで要件を満たせない場合のみ、カスタムWi
 
 ### 2.1 MD3カラートークン
 
+**重要**: プロジェクト全体のカラーシステム定義は [color-system.md](color-system.md) を参照してください。このセクションでは概要のみを記載します。
+
+- **完全な定義**: [docs/common/color-system.md](color-system.md)
+- **デザイン参照**: [designs/color-system.pen](../../designs/color-system.pen)
+
 Material Design 3のカラーシステムを使用します。テーマ設定は`ThemeData`で一元管理してください。
 
 #### 主要カラー
@@ -1256,6 +1261,16 @@ Container(
 )
 ```
 
+### 15.4 カラーシステムの使用
+
+Pencilで新規画面をデザインする際は、必ず `color-system.pen` のカラー変数を使用してください。
+
+- **カラー変数定義**: [designs/color-system.pen](../../designs/color-system.pen)
+- **変数マッピング**: [color-system.md Section 3](color-system.md#3-pencil変数とのマッピング)
+- **使用方法**: [color-system.md Section 6](color-system.md#6-pencil実装での使用方法)
+
+ハードコードされた色（例: `#65558F`）は使用せず、常に変数（例: `$primary`）を参照してください。
+
 ## 16. 変更履歴
 
 | 日付 | バージョン | 変更内容 | 著者 |
@@ -1263,3 +1278,4 @@ Container(
 | 2026-01-26 | 1.0 | 初版作成、MD3正式採用 | Claude Code |
 | 2026-01-26 | 2.0 | レイアウトシステム、Elevation、再利用可能コンポーネント設計を追加 | Claude Code |
 | 2026-01-26 | 2.1 | Pencilデザインサイズセクション追加、基準サイズをiPhone 15 Pro (393×852) に決定 | Claude Code |
+| 2026-01-26 | 2.2 | カラーシステム定義への参照リンク追加（セクション2.1、15.4）、UI/UX設計時のカラーシステム確認フローを改善 | Claude Code |
