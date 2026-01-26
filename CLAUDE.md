@@ -18,6 +18,7 @@
 1. docs/implementation/index.md（実装支援の入口）
 2. docs/common/architecture-principles.md（アーキテクチャ原則）
 3. docs/common/coding-conventions.md（コーディング規約）
+4. docs/common/ui-design-guidelines.md（UI/UXデザインガイドライン）
 
 ## Claude Code固有の指示
 
@@ -29,6 +30,7 @@
   ```
 - 新機能追加時は、docs/implementation/how-to/add-feature.md の手順に従うこと
 - 画面遷移追加時は、docs/implementation/how-to/add-navigation.md の手順に従うこと
+- UI実装時は、docs/common/ui-design-guidelines.md に従い、Material Design 3 コンポーネントを使用すること
 
 ## 新機能のアイデア出しワークフロー
 
@@ -119,6 +121,201 @@ brainstormサブエージェントの実行後：
 
 - [アイデア出しガイド](docs/implementation/how-to/brainstorm-ideas.md) - 詳細な手順
 - [brainstormサブエージェント定義](.claude/agents/brainstorm.md) - エージェントの仕様
+
+## 新機能開発ワークフロー全体
+
+新機能を開発する際は、以下のワークフローに従ってください：
+
+### ステップ1: アイデア出し（brainstorm）
+
+**エージェント**: `brainstorm`
+
+**入力**: 機能のアイデア・要望
+
+**処理**:
+- Phase 1: 既存コードベース分析、制約条件洗い出し
+- Phase 2: Gemini brainstormで多様なアイデア生成（12-15個）
+- Phase 3: 技術検証（必要に応じてCodex/Gemini使用）
+- Phase 4: 6つの観点で評価、Top 3-5案を選定
+
+**出力**: ADR提案（複数案、評価付き）
+
+**成果物**: `docs/specification/architecture/decisions/XXXX-{feature-name}.md`
+
+**次のステップ**: ユーザーがADR案を1つ選択
+
+---
+
+### ステップ2: ユーザー選択
+
+**アクション**:
+- 提案から1つ選択
+- または、別視点での再検討依頼
+
+**所要時間**: 数分〜
+
+**次のステップ**: designerエージェントに進む
+
+---
+
+### ステップ3: 実装設計（designer）
+
+**エージェント**: `designer`
+
+**入力**: 選択されたADR
+
+**処理**:
+- Phase 1: コンテキスト収集（ADR、共通ドキュメント、既存コード）
+- Phase 2: 既存実装パターン分析
+- Phase 3: 実装設計書作成（ハイブリッド形式、500-800行）
+- Phase 4: Codexによる自動レビュー
+- Phase 5: レビュー結果反映、最終出力
+
+**出力**: 実装設計書
+
+**成果物**: `docs/specification/implementation-designs/XXXX-{feature-name}.md`
+
+**ハイブリッド形式**:
+- ✅ ビジネスロジック（完全実装）
+- ✅ データモデル構造（完全実装）
+- ✅ ルート定義（完全実装）
+- ✅ テストケース（完全実装）
+- ⚡ ボイラープレート（概要のみ）
+
+**次のステップ**: ユーザーが実装設計書をレビュー
+
+---
+
+### ステップ4: ユーザーレビュー
+
+**アクション**:
+- 実装設計書の承認
+- または、修正指示
+
+**所要時間**: 数分〜
+
+**次のステップ**: spec-updaterエージェントに進む
+
+---
+
+### ステップ5: 仕様書作成/更新（spec-updater）
+
+**エージェント**: `spec-updater`
+
+**入力**: 承認された実装設計書
+
+**処理**:
+- Phase 1: コンテキスト収集（実装設計書、ADR、既存仕様書）
+- Phase 2: 影響範囲分析（新規作成 or 更新を判断）
+- Phase 3: 機能仕様書の作成/更新
+- Phase 4: UI設計書の作成/更新
+- Phase 5: Geminiによる自動レビュー
+- Phase 6: レビュー結果反映と修正
+- Phase 7: 最終確認とユーザー報告
+
+**出力**: 機能仕様書・UI設計書
+
+**成果物**:
+- `docs/specification/features/{feature-name}.md`（新規 or 更新）
+- `docs/specification/ui-design/{screen-name}-design.md`（新規 or 更新）
+
+**レビュー観点**（Gemini）:
+- ドキュメント構造の完全性
+- ユーザーストーリーの妥当性
+- Material Design 3への準拠
+- テストシナリオの網羅性
+- アクセシビリティ要件
+
+**次のステップ**: ユーザーが最終承認
+
+---
+
+### ステップ6: ユーザー承認
+
+**アクション**: 仕様書の最終確認
+
+**所要時間**: 数分〜
+
+**次のステップ**: 実装フェーズへ
+
+---
+
+### ステップ7: 実装
+
+**エージェント**: `implementer`（または手動実装）
+
+**入力**: 承認された設計書・仕様書
+
+**処理**:
+- 実装設計書の「実装手順」セクションに従う
+- コード実装、テスト作成
+- コード生成実行
+- 静的解析、フォーマット
+
+**成果物**: 動作する機能
+
+---
+
+### ワークフロー図
+
+```
+┌──────────────┐
+│  brainstorm  │ ADR提案（複数案）
+└──────┬───────┘
+       │
+       ▼
+┌──────────────┐
+│ ユーザー選択  │ 1案を選択
+└──────┬───────┘
+       │
+       ▼
+┌──────────────┐
+│   designer   │ 実装設計書作成 + Codexレビュー
+└──────┬───────┘
+       │
+       ▼
+┌──────────────┐
+│ユーザーレビュー│ 承認 or 修正指示
+└──────┬───────┘
+       │
+       ▼
+┌──────────────┐
+│spec-updater  │ 機能仕様書・UI設計書作成/更新 + Geminiレビュー
+└──────┬───────┘
+       │
+       ▼
+┌──────────────┐
+│ ユーザー承認  │ 最終確認
+└──────┬───────┘
+       │
+       ▼
+┌──────────────┐
+│     実装     │ コード実装
+└──────────────┘
+```
+
+### エージェント定義ファイル
+
+- `.claude/agents/brainstorm.md` - アイデア出しエージェント
+- `.claude/agents/designer.md` - 実装設計エージェント
+- `.claude/agents/spec-updater.md` - 仕様書作成/更新エージェント
+
+### ドキュメント体系
+
+```
+docs/specification/
+├── architecture/
+│   └── decisions/              ← ADR（提案書、1対1）
+│       └── XXXX-feature.md
+├── implementation-designs/     ← 実装設計書（ADRと1対1）
+│   └── XXXX-feature.md
+├── features/                   ← 機能仕様書（多対多）
+│   └── feature-name.md
+└── ui-design/                  ← UI設計書（多対多）
+    └── screen-name-design.md
+```
+
+**重要**: ADRと実装設計書は必ず1対1の関係。機能仕様書・UI設計書は複数のADRから参照・更新される可能性がある。
 
 ## Plan Mode時のドキュメント作成ルール
 
