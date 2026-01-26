@@ -1,0 +1,4369 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "kO0yS",
+      "x": 0,
+      "y": 0,
+      "name": "Components",
+      "theme": {
+        "mode": "light"
+      },
+      "fill": "$surface",
+      "layout": "vertical",
+      "gap": 24,
+      "padding": 24,
+      "children": [
+        {
+          "type": "frame",
+          "id": "NUWeZ",
+          "name": "Checkbox",
+          "reusable": true,
+          "width": 24,
+          "height": 24,
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "cornerRadius": 4,
+              "id": "hCZvs",
+              "x": 0,
+              "y": 0,
+              "name": "CheckboxOutline",
+              "fill": "transparent",
+              "width": 24,
+              "height": 24,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "$outline"
+              }
+            },
+            {
+              "type": "icon_font",
+              "id": "gvYpq",
+              "x": 3,
+              "y": 3,
+              "name": "CheckIcon",
+              "width": 18,
+              "height": 18,
+              "iconFontName": "check",
+              "iconFontFamily": "Material Symbols Outlined",
+              "fill": "transparent"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "6mxD4",
+          "name": "CheckboxChecked",
+          "reusable": true,
+          "width": 24,
+          "height": 24,
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "cornerRadius": 4,
+              "id": "mVNCw",
+              "x": 0,
+              "y": 0,
+              "name": "CheckboxOutline",
+              "fill": "$primary",
+              "width": 24,
+              "height": 24,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "$primary"
+              }
+            },
+            {
+              "type": "icon_font",
+              "id": "Y8jSQ",
+              "x": 3,
+              "y": 3,
+              "name": "CheckIcon",
+              "width": 18,
+              "height": 18,
+              "iconFontName": "check",
+              "iconFontFamily": "Material Symbols Outlined",
+              "fill": "$onPrimary"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "JN9WA",
+          "name": "TaskListItemTomorrow",
+          "reusable": true,
+          "width": 402,
+          "height": 88,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "gap": 16,
+          "padding": 16,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "2YJ2A",
+              "type": "ref",
+              "ref": "NUWeZ",
+              "name": "CheckboxFrame"
+            },
+            {
+              "type": "frame",
+              "id": "sT98M",
+              "name": "TaskInfo",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "wUQVD",
+                  "name": "TaskTitle",
+                  "fill": "$onSurface",
+                  "content": "タスクタイトル",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "6FqLl",
+                  "name": "TaskDescription",
+                  "fill": "$onSurfaceVariant",
+                  "content": "タスクの説明",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "gTbCp",
+                  "name": "DueDate",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "GDcsJ",
+                      "name": "DueDateIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "info",
+                      "iconFontFamily": "Material Symbols Outlined",
+                      "fill": "$info"
+                    },
+                    {
+                      "type": "text",
+                      "id": "kWe8z",
+                      "name": "DueDateText",
+                      "fill": "$info",
+                      "content": "明日まで",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "tWHyq",
+              "name": "MenuFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "RWdKB",
+                  "name": "MoreMenu",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "more_vert",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "2pA9P",
+          "name": "TaskListItemWarning",
+          "reusable": true,
+          "width": 402,
+          "height": 88,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "gap": 16,
+          "padding": 16,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "ktMnT",
+              "type": "ref",
+              "ref": "NUWeZ",
+              "name": "CheckboxFrame"
+            },
+            {
+              "type": "frame",
+              "id": "tnuX5",
+              "name": "TaskInfo",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "AgDpu",
+                  "name": "TaskTitle",
+                  "fill": "$onSurface",
+                  "content": "タスクタイトル",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "Lxvfz",
+                  "name": "TaskDescription",
+                  "fill": "$onSurfaceVariant",
+                  "content": "タスクの説明",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "HEJJz",
+                  "name": "DueDate",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "5JoIz",
+                      "name": "DueDateIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "schedule",
+                      "iconFontFamily": "Material Symbols Outlined",
+                      "fill": "$warning"
+                    },
+                    {
+                      "type": "text",
+                      "id": "q7hYt",
+                      "name": "DueDateText",
+                      "fill": "$warning",
+                      "content": "今日まで",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "MnJMz",
+              "name": "MenuFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "G9ceF",
+                  "name": "MoreMenu",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "more_vert",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Jp2Wd",
+          "name": "TaskListItemError",
+          "reusable": true,
+          "width": 402,
+          "height": 88,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "gap": 16,
+          "padding": 16,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "krQLS",
+              "type": "ref",
+              "ref": "NUWeZ",
+              "name": "CheckboxFrame"
+            },
+            {
+              "type": "frame",
+              "id": "CM4fm",
+              "name": "TaskInfo",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "VJIkg",
+                  "name": "TaskTitle",
+                  "fill": "$onSurface",
+                  "content": "タスクタイトル",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "XBP7p",
+                  "name": "TaskDescription",
+                  "fill": "$onSurfaceVariant",
+                  "content": "タスクの説明",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "WB714",
+                  "name": "DueDate",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "fND94",
+                      "name": "DueDateIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "report",
+                      "iconFontFamily": "Material Symbols Outlined",
+                      "fill": "$error"
+                    },
+                    {
+                      "type": "text",
+                      "id": "BHbVD",
+                      "name": "DueDateText",
+                      "fill": "$error",
+                      "content": "期限切れ",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "fXNxu",
+              "name": "MenuFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "pkmhn",
+                  "name": "MoreMenu",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "more_vert",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "cFmsv",
+          "name": "TaskListItemCompleted",
+          "reusable": true,
+          "width": 402,
+          "height": 88,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "gap": 16,
+          "padding": 16,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "5pBj9",
+              "type": "ref",
+              "ref": "6mxD4",
+              "name": "CheckboxFrame"
+            },
+            {
+              "type": "frame",
+              "id": "I5OZV",
+              "name": "TaskInfo",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "epcF4",
+                  "name": "TaskTitle",
+                  "fill": "$onSurfaceVariant",
+                  "content": "タスクタイトル",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uqNDd",
+                  "name": "TaskDescription",
+                  "fill": "$outlineVariant",
+                  "content": "タスクの説明",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "mEmo9",
+                  "name": "DueDate",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "yH3ux",
+                      "name": "DueDateIcon",
+                      "width": 16,
+                      "height": 16,
+                      "iconFontName": "check_circle",
+                      "iconFontFamily": "Material Symbols Outlined",
+                      "fill": "$success"
+                    },
+                    {
+                      "type": "text",
+                      "id": "o1Ufm",
+                      "name": "DueDateText",
+                      "fill": "$success",
+                      "content": "完了",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "MMJ4Z",
+              "name": "MenuFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "0ox3g",
+                  "name": "MoreMenu",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "more_vert",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "86T3R",
+          "name": "TaskListItemNormal",
+          "reusable": true,
+          "width": 402,
+          "height": 88,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "gap": 16,
+          "padding": 16,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "dLM6h",
+              "type": "ref",
+              "ref": "NUWeZ",
+              "name": "CheckboxFrame"
+            },
+            {
+              "type": "frame",
+              "id": "CKGcT",
+              "name": "TaskInfo",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ylNx7",
+                  "name": "TaskTitle",
+                  "fill": "$onSurface",
+                  "content": "タスクタイトル",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "mOPRF",
+                  "name": "TaskDescription",
+                  "fill": "$onSurfaceVariant",
+                  "content": "タスクの説明",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "1BTWB",
+                  "name": "DueDate",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "khSiR",
+                      "name": "DueDateText",
+                      "fill": "$onSurfaceVariant",
+                      "content": "5日後",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ht4q2",
+              "name": "MenuFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "SAykj",
+                  "name": "MoreMenu",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "more_vert",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "XfTQm",
+          "name": "TaskListItemNoDue",
+          "reusable": true,
+          "width": 402,
+          "height": 88,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "gap": 16,
+          "padding": 16,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "P8K2G",
+              "type": "ref",
+              "ref": "NUWeZ",
+              "name": "CheckboxFrame"
+            },
+            {
+              "type": "frame",
+              "id": "jgZp1",
+              "name": "TaskInfo",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "JgwbW",
+                  "name": "TaskTitle",
+                  "fill": "$onSurface",
+                  "content": "タスクタイトル",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "PPXsW",
+                  "name": "TaskDescription",
+                  "fill": "$onSurfaceVariant",
+                  "content": "タスクの説明",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "6p9Wv",
+                  "name": "DueDate",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "h9XRC",
+                      "name": "DueDateText",
+                      "fill": "$outline",
+                      "content": "期限なし",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "3vJ6f",
+              "name": "MenuFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "Ygtcs",
+                  "name": "MoreMenu",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "more_vert",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "4QntQ",
+      "x": 550,
+      "y": 0,
+      "name": "All Tasks - Normal",
+      "theme": {
+        "mode": "light"
+      },
+      "width": 402,
+      "height": 874,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "EjiZQ",
+          "name": "AppBar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#F2ECF4",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "cB7mA",
+              "name": "Title",
+              "fill": "$onSurface",
+              "content": "Home",
+              "fontFamily": "Outfit",
+              "fontSize": 22,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "CLj88",
+              "name": "SearchFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "WMlpV",
+                  "name": "SearchIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "search",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "FIwH3",
+          "name": "TabBar",
+          "width": "fill_container",
+          "height": 48,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "justifyContent": "space_around",
+          "children": [
+            {
+              "type": "frame",
+              "id": "PVOQb",
+              "name": "Tab_All",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "V9EMd",
+                  "name": "TabText",
+                  "fill": "$primary",
+                  "content": "すべて",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "C5UsH",
+                  "name": "Indicator",
+                  "fill": "$primary",
+                  "width": "fill_container",
+                  "height": 3
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "k3zsj",
+              "name": "Tab_Today",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "mfpvQ",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "今日",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "n6zeX",
+              "name": "Tab_Overdue",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "5qsVn",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "期限切れ",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "3zwbr",
+              "name": "Tab_Completed",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "2KvUx",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "完了済み",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "7CnJp",
+          "name": "Content Layer",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "M3fwK",
+              "x": 0,
+              "y": 0,
+              "name": "TaskListView",
+              "width": 402,
+              "height": 770,
+              "fill": "$surface",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "Dnmbl",
+                  "type": "ref",
+                  "ref": "Jp2Wd",
+                  "name": "Task_Overdue",
+                  "width": "fill_container"
+                },
+                {
+                  "id": "o7o0O",
+                  "type": "ref",
+                  "ref": "2pA9P",
+                  "name": "Task_Today",
+                  "width": "fill_container"
+                },
+                {
+                  "id": "8Exq3",
+                  "type": "ref",
+                  "ref": "JN9WA",
+                  "name": "Task_Tomorrow",
+                  "width": "fill_container"
+                },
+                {
+                  "id": "m3ML3",
+                  "type": "ref",
+                  "ref": "86T3R",
+                  "name": "Task_Future",
+                  "width": "fill_container"
+                },
+                {
+                  "id": "yWXzh",
+                  "type": "ref",
+                  "ref": "XfTQm",
+                  "name": "Task_NoDue",
+                  "width": "fill_container"
+                },
+                {
+                  "id": "NJEyR",
+                  "type": "ref",
+                  "ref": "cFmsv",
+                  "name": "Task_Completed",
+                  "width": "fill_container"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "AUPyA",
+              "x": 330,
+              "y": 698,
+              "name": "FAB",
+              "width": 56,
+              "height": 56,
+              "fill": "$primaryContainer",
+              "cornerRadius": 16,
+              "effect": [
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#0000004d",
+                  "offset": {
+                    "x": 0,
+                    "y": 1
+                  },
+                  "blur": 2.625
+                },
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#00000026",
+                  "offset": {
+                    "x": 0,
+                    "y": 4
+                  },
+                  "blur": 7,
+                  "spread": 3
+                }
+              ],
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "Tzost",
+                  "name": "FAB_Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "add",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onPrimaryContainer"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "VWS6I",
+      "x": 1050,
+      "y": 0,
+      "name": "Today Tab - Active",
+      "theme": {
+        "mode": "light"
+      },
+      "width": 402,
+      "height": 874,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "kwcH4",
+          "name": "AppBar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#F2ECF4",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "HZ32A",
+              "name": "Title",
+              "fill": "$onSurface",
+              "content": "Home",
+              "fontFamily": "Outfit",
+              "fontSize": 22,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "L0m6M",
+              "name": "SearchFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "ynI62",
+                  "name": "SearchIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "search",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "3eNJl",
+          "name": "TabBar",
+          "width": "fill_container",
+          "height": 48,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "justifyContent": "space_around",
+          "children": [
+            {
+              "type": "frame",
+              "id": "tzPVX",
+              "name": "Tab_All",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cmv9C",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "すべて",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Ckiw2",
+              "name": "Tab_Today",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "VJgIL",
+                  "name": "TabText",
+                  "fill": "$primary",
+                  "content": "今日",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "vMt75",
+                  "name": "Indicator",
+                  "fill": "$primary",
+                  "width": "fill_container",
+                  "height": 3
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "6BXtE",
+              "name": "Tab_Overdue",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "3FBGK",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "期限切れ",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "FG4Kc",
+              "name": "Tab_Completed",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "VjFO2",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "完了済み",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "sw09C",
+          "name": "Content Layer",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "8SigM",
+              "x": 0,
+              "y": 0,
+              "name": "TaskListView",
+              "width": 402,
+              "height": 770,
+              "fill": "$surface",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "4vPlS",
+                  "type": "ref",
+                  "ref": "JN9WA",
+                  "width": "fill_container",
+                  "name": "Task_Report",
+                  "descendants": {
+                    "wUQVD": {
+                      "content": "レポート作成"
+                    },
+                    "6FqLl": {
+                      "content": "月次レポートの完成"
+                    },
+                    "GDcsJ": {
+                      "iconFontName": "schedule",
+                      "fill": "$warning"
+                    },
+                    "kWe8z": {
+                      "content": "今日まで",
+                      "fill": "$warning"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "6Rh7H",
+              "x": 330,
+              "y": 698,
+              "name": "FAB",
+              "width": 56,
+              "height": 56,
+              "fill": "$primaryContainer",
+              "cornerRadius": 16,
+              "effect": [
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#0000004d",
+                  "offset": {
+                    "x": 0,
+                    "y": 1
+                  },
+                  "blur": 2.625
+                },
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#00000026",
+                  "offset": {
+                    "x": 0,
+                    "y": 4
+                  },
+                  "blur": 7,
+                  "spread": 3
+                }
+              ],
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "zz14X",
+                  "name": "FAB_Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "add",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onPrimaryContainer"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "BcKa3",
+      "x": 1550,
+      "y": 0,
+      "name": "Overdue Tab - Active",
+      "theme": {
+        "mode": "light"
+      },
+      "width": 402,
+      "height": 874,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "bnH7H",
+          "name": "AppBar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#F2ECF4",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "5cRX0",
+              "name": "Title",
+              "fill": "$onSurface",
+              "content": "Home",
+              "fontFamily": "Outfit",
+              "fontSize": 22,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "DAWeP",
+              "name": "SearchFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "iSBWV",
+                  "name": "SearchIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "search",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "eJvnr",
+          "name": "TabBar",
+          "width": "fill_container",
+          "height": 48,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "justifyContent": "space_around",
+          "children": [
+            {
+              "type": "frame",
+              "id": "jasqu",
+              "name": "Tab_All",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "iqQCF",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "すべて",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "F8hiQ",
+              "name": "Tab_Today",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "c84eq",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "今日",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "YuWnq",
+              "name": "Tab_Overdue",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "87pbT",
+                  "name": "TabText",
+                  "fill": "$primary",
+                  "content": "期限切れ",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "kFPKE",
+                  "name": "Indicator",
+                  "fill": "$primary",
+                  "width": "fill_container",
+                  "height": 3
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vA3eH",
+              "name": "Tab_Completed",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "mT7EJ",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "完了済み",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "QjcCD",
+          "name": "Content Layer",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "4eUCH",
+              "x": 0,
+              "y": 0,
+              "name": "TaskListView",
+              "width": 402,
+              "height": 770,
+              "fill": "$surface",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "YlQVB",
+                  "type": "ref",
+                  "ref": "JN9WA",
+                  "width": "fill_container",
+                  "name": "Task_Shopping",
+                  "descendants": {
+                    "wUQVD": {
+                      "content": "買い物に行く"
+                    },
+                    "6FqLl": {
+                      "content": "牛乳とパンを買う"
+                    },
+                    "GDcsJ": {
+                      "iconFontName": "error_outline",
+                      "fill": "$error"
+                    },
+                    "kWe8z": {
+                      "content": "期限切れ",
+                      "fill": "$error"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "dzq8d",
+              "x": 330,
+              "y": 698,
+              "name": "FAB",
+              "width": 56,
+              "height": 56,
+              "fill": "$primaryContainer",
+              "cornerRadius": 16,
+              "effect": [
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#0000004d",
+                  "offset": {
+                    "x": 0,
+                    "y": 1
+                  },
+                  "blur": 2.625
+                },
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#00000026",
+                  "offset": {
+                    "x": 0,
+                    "y": 4
+                  },
+                  "blur": 7,
+                  "spread": 3
+                }
+              ],
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "4aFhg",
+                  "name": "FAB_Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "add",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onPrimaryContainer"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "IM1kk",
+      "x": 2050,
+      "y": 0,
+      "name": "Completed Tab - Active",
+      "theme": {
+        "mode": "light"
+      },
+      "width": 402,
+      "height": 874,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "UVSOJ",
+          "name": "AppBar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#F2ECF4",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "Pf6Pz",
+              "name": "Title",
+              "fill": "$onSurface",
+              "content": "Home",
+              "fontFamily": "Outfit",
+              "fontSize": 22,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "1qxAT",
+              "name": "SearchFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "PPaNd",
+                  "name": "SearchIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "search",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Xgm57",
+          "name": "TabBar",
+          "width": "fill_container",
+          "height": 48,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "justifyContent": "space_around",
+          "children": [
+            {
+              "type": "frame",
+              "id": "HqSqC",
+              "name": "Tab_All",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "6qiWX",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "すべて",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "8Gsjg",
+              "name": "Tab_Today",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "mnf9I",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "今日",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "GYrl5",
+              "name": "Tab_Overdue",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "lzSsO",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "期限切れ",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "CVqNt",
+              "name": "Tab_Completed",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "8MiSr",
+                  "name": "TabText",
+                  "fill": "$primary",
+                  "content": "完了済み",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "ZPNep",
+                  "name": "Indicator",
+                  "fill": "$primary",
+                  "width": "fill_container",
+                  "height": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "6Ob1C",
+          "name": "Content Layer",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "zJb18",
+              "x": 0,
+              "y": 0,
+              "name": "TaskListView",
+              "width": 402,
+              "height": 770,
+              "fill": "$surface",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "ca2jt",
+                  "type": "ref",
+                  "ref": "JN9WA",
+                  "name": "Task_Project",
+                  "width": "fill_container",
+                  "descendants": {
+                    "2YJ2A": {
+                      "id": "YFs3S",
+                      "type": "ref",
+                      "ref": "6mxD4",
+                      "name": "checkboxCompletedRef"
+                    },
+                    "wUQVD": {
+                      "content": "プロジェクト計画",
+                      "fill": "$outline"
+                    },
+                    "6FqLl": {
+                      "content": "Q1のロードマップ作成",
+                      "fill": "$outlineVariant"
+                    },
+                    "GDcsJ": {
+                      "iconFontName": "check_circle",
+                      "fill": "$success"
+                    },
+                    "kWe8z": {
+                      "content": "完了",
+                      "fill": "$success"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "oYXPu",
+              "x": 330,
+              "y": 698,
+              "name": "FAB",
+              "width": 56,
+              "height": 56,
+              "fill": "$primaryContainer",
+              "cornerRadius": 16,
+              "effect": [
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#0000004d",
+                  "offset": {
+                    "x": 0,
+                    "y": 1
+                  },
+                  "blur": 2.625
+                },
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#00000026",
+                  "offset": {
+                    "x": 0,
+                    "y": 4
+                  },
+                  "blur": 7,
+                  "spread": 3
+                }
+              ],
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "1QQ5W",
+                  "name": "FAB_Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "add",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onPrimaryContainer"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "1Rt1H",
+      "x": 550,
+      "y": 1000,
+      "name": "All Tasks - Loading",
+      "theme": {
+        "mode": "light"
+      },
+      "width": 402,
+      "height": 874,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "2PIFb",
+          "name": "AppBar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#F2ECF4",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "Z8xym",
+              "name": "Title",
+              "fill": "$onSurface",
+              "content": "Home",
+              "fontFamily": "Outfit",
+              "fontSize": 22,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "nrEyb",
+              "name": "SearchFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "vpPhD",
+                  "name": "SearchIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "search",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "mwAwG",
+          "name": "TabBar",
+          "width": "fill_container",
+          "height": 48,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "justifyContent": "space_around",
+          "children": [
+            {
+              "type": "frame",
+              "id": "hN7XG",
+              "name": "Tab_All",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ivTKg",
+                  "name": "TabText",
+                  "fill": "$primary",
+                  "content": "すべて",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "LlPSu",
+                  "name": "Indicator",
+                  "fill": "$primary",
+                  "width": "fill_container",
+                  "height": 3
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Lemro",
+              "name": "Tab_Today",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "hPUMe",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "今日",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "zBzfQ",
+              "name": "Tab_Overdue",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "MuumJ",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "期限切れ",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "mSwkn",
+              "name": "Tab_Completed",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "rQvU3",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "完了済み",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "h6xww",
+          "name": "Content Layer",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "zcey3",
+              "x": 0,
+              "y": 0,
+              "name": "LoadingContent",
+              "width": 402,
+              "height": 770,
+              "fill": "$surface",
+              "layout": "vertical",
+              "gap": 16,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ocxpx",
+                  "name": "Spinner",
+                  "width": 48,
+                  "height": 48,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "ellipse",
+                      "id": "Ad0lO",
+                      "name": "SpinnerCircle",
+                      "fill": "transparent",
+                      "width": 48,
+                      "height": 48,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 4,
+                        "fill": "$primary"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "gtL1Y",
+                  "name": "LoadingText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "読み込み中...",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "6Q3gB",
+      "x": 1050,
+      "y": 1000,
+      "name": "All Tasks - Empty",
+      "theme": {
+        "mode": "light"
+      },
+      "width": 402,
+      "height": 874,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "QIkSS",
+          "name": "AppBar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#F2ECF4",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "bkVo3",
+              "name": "Title",
+              "fill": "$onSurface",
+              "content": "Home",
+              "fontFamily": "Outfit",
+              "fontSize": 22,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "XTbXL",
+              "name": "SearchFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "fZZox",
+                  "name": "SearchIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "search",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "lQndU",
+          "name": "TabBar",
+          "width": "fill_container",
+          "height": 48,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "justifyContent": "space_around",
+          "children": [
+            {
+              "type": "frame",
+              "id": "Z5Cqx",
+              "name": "Tab_All",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Wiz9C",
+                  "name": "TabText",
+                  "fill": "$primary",
+                  "content": "すべて",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "t1h87",
+                  "name": "Indicator",
+                  "fill": "$primary",
+                  "width": "fill_container",
+                  "height": 3
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "0xQAq",
+              "name": "Tab_Today",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "RvWCl",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "今日",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "LuYXW",
+              "name": "Tab_Overdue",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "4Ai1h",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "期限切れ",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "pGvdN",
+              "name": "Tab_Completed",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cKOyx",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "完了済み",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "yZg8W",
+          "name": "Content Layer",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "OdjMJ",
+              "x": 330,
+              "y": 698,
+              "name": "FAB",
+              "width": 56,
+              "height": 56,
+              "fill": "$primaryContainer",
+              "cornerRadius": 16,
+              "effect": [
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#0000004d",
+                  "offset": {
+                    "x": 0,
+                    "y": 1
+                  },
+                  "blur": 2.625
+                },
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#00000026",
+                  "offset": {
+                    "x": 0,
+                    "y": 4
+                  },
+                  "blur": 7,
+                  "spread": 3
+                }
+              ],
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "QXvnY",
+                  "name": "FAB_Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "add",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onPrimaryContainer"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Gv6QR",
+              "x": 0,
+              "y": 0,
+              "name": "EmptyContent",
+              "width": 402,
+              "height": 770,
+              "fill": "$surface",
+              "layout": "vertical",
+              "gap": 24,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "ajRyk",
+                  "name": "EmptyIcon",
+                  "width": 64,
+                  "height": 64,
+                  "iconFontName": "task_alt",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$outline"
+                },
+                {
+                  "type": "frame",
+                  "id": "smfwZ",
+                  "name": "TextContainer",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "g7JlD",
+                      "name": "EmptyTitle",
+                      "fill": "$onSurface",
+                      "content": "タスクがありません",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "qpuKD",
+                      "name": "EmptyDescription",
+                      "fill": "$onSurfaceVariant",
+                      "content": "タスクを追加するには\n右下の + ボタンをタップ",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "LAQVN",
+      "x": 1550,
+      "y": 1000,
+      "name": "All Tasks - Error",
+      "theme": {
+        "mode": "light"
+      },
+      "width": 402,
+      "height": 874,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "0g6cn",
+          "name": "AppBar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#F2ECF4",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "0KmL2",
+              "name": "Title",
+              "fill": "$onSurface",
+              "content": "Home",
+              "fontFamily": "Outfit",
+              "fontSize": 22,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "f0Yiq",
+              "name": "SearchFrame",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "7x8ER",
+                  "name": "SearchIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "search",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "5Zhs5",
+          "name": "TabBar",
+          "width": "fill_container",
+          "height": 48,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "justifyContent": "space_around",
+          "children": [
+            {
+              "type": "frame",
+              "id": "fWFQw",
+              "name": "Tab_All",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "M2Npa",
+                  "name": "TabText",
+                  "fill": "$primary",
+                  "content": "すべて",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "PRui3",
+                  "name": "Indicator",
+                  "fill": "$primary",
+                  "width": "fill_container",
+                  "height": 3
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "iIMei",
+              "name": "Tab_Today",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "NLI8a",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "今日",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Bbecu",
+              "name": "Tab_Overdue",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "B6gu2",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "期限切れ",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Hevv7",
+              "name": "Tab_Completed",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bFKak",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "完了済み",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "S4a6J",
+          "name": "Content Layer",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "AfhI8",
+              "x": 0,
+              "y": 0,
+              "name": "ErrorContent",
+              "width": 402,
+              "height": 770,
+              "fill": "$surface",
+              "layout": "vertical",
+              "gap": 24,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "LKMlB",
+                  "name": "ErrorIcon",
+                  "width": 64,
+                  "height": 64,
+                  "iconFontName": "error",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$error"
+                },
+                {
+                  "type": "frame",
+                  "id": "MlavW",
+                  "name": "TextContainer",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "hIR9D",
+                      "name": "ErrorTitle",
+                      "fill": "$onSurface",
+                      "content": "エラーが発生しました",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "JOFDl",
+                      "name": "ErrorDescription",
+                      "fill": "$onSurfaceVariant",
+                      "content": "データの読み込みに失敗しました",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "0XquD",
+                  "name": "RetryButton",
+                  "width": 120,
+                  "height": 40,
+                  "fill": "$primary",
+                  "cornerRadius": 20,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "N5PYI",
+                      "name": "RetryText",
+                      "fill": "$onPrimary",
+                      "content": "再試行",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "CKFMW",
+      "x": 2050,
+      "y": 1000,
+      "name": "All Tasks - Search",
+      "theme": {
+        "mode": "light"
+      },
+      "width": 402,
+      "height": 874,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "TWHIe",
+          "name": "AppBar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#F2ECF4",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "8ob4b",
+              "name": "BackButton",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "5VKOz",
+                  "name": "BackIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "arrow_back",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onPrimary"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "dCBvo",
+              "name": "SearchField",
+              "width": "fill_container",
+              "height": 40,
+              "fill": "$onPrimary",
+              "cornerRadius": 4,
+              "gap": 8,
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "XPJBS",
+                  "name": "SearchText",
+                  "fill": "$onSurface",
+                  "content": "買い物",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "SG8oN",
+              "name": "ClearButton",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "pFIWi",
+                  "name": "ClearIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "close",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onPrimary"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "H4Hm0",
+          "name": "TabBar",
+          "width": "fill_container",
+          "height": 48,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "justifyContent": "space_around",
+          "children": [
+            {
+              "type": "frame",
+              "id": "MVfq0",
+              "name": "Tab_All",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "nlWyL",
+                  "name": "TabText",
+                  "fill": "$primary",
+                  "content": "すべて",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "cnPlp",
+                  "name": "Indicator",
+                  "fill": "$primary",
+                  "width": "fill_container",
+                  "height": 3
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "yK6HW",
+              "name": "Tab_Today",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "xUO5H",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "今日",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hyKEJ",
+              "name": "Tab_Overdue",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "86EDF",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "期限切れ",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "BlK1U",
+              "name": "Tab_Completed",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "yYrBj",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "完了済み",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "LTG5r",
+          "name": "Content Layer",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "YYch0",
+              "x": 0,
+              "y": 0,
+              "name": "TaskListView",
+              "width": 402,
+              "height": 770,
+              "fill": "$surface",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "63dNq",
+                  "type": "ref",
+                  "ref": "JN9WA",
+                  "width": "fill_container",
+                  "name": "Task_Shopping",
+                  "descendants": {
+                    "wUQVD": {
+                      "content": "買い物に行く"
+                    },
+                    "6FqLl": {
+                      "content": "牛乳とパンを買う"
+                    }
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "YxH1T",
+                  "name": "ResultCount",
+                  "fill": "$onSurfaceVariant",
+                  "content": "検索結果: 1件",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "RgYZt",
+              "x": 330,
+              "y": 698,
+              "name": "FAB",
+              "width": 56,
+              "height": 56,
+              "fill": "$primaryContainer",
+              "cornerRadius": 16,
+              "effect": [
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#0000004d",
+                  "offset": {
+                    "x": 0,
+                    "y": 1
+                  },
+                  "blur": 2.625
+                },
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#00000026",
+                  "offset": {
+                    "x": 0,
+                    "y": 4
+                  },
+                  "blur": 7,
+                  "spread": 3
+                }
+              ],
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "1jr5u",
+                  "name": "FAB_Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "add",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onPrimaryContainer"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "8imYM",
+      "x": 2550,
+      "y": 1000,
+      "name": "Task Add Dialog",
+      "width": 320,
+      "height": 480,
+      "fill": "$surface",
+      "cornerRadius": 28,
+      "effect": {
+        "type": "shadow",
+        "shadowType": "outer",
+        "color": "#00000033",
+        "offset": {
+          "x": 0,
+          "y": 8
+        },
+        "blur": 24
+      },
+      "layout": "vertical",
+      "gap": 16,
+      "padding": 24,
+      "children": [
+        {
+          "type": "frame",
+          "id": "7yRmQ",
+          "name": "DialogHeader",
+          "width": "fill_container",
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "CJiJD",
+              "name": "DialogTitle",
+              "fill": "$onSurface",
+              "content": "新しいタスク",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "GHG7r",
+              "name": "CloseButton",
+              "width": 24,
+              "height": 24,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "bhOLa",
+                  "name": "CloseIcon",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "close",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "854Ly",
+          "name": "TitleField",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 8,
+          "children": [
+            {
+              "type": "text",
+              "id": "iiz8h",
+              "name": "TitleLabel",
+              "fill": "$onSurface",
+              "content": "タイトル *",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "3EeQW",
+              "name": "TitleInput",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "$surfaceVariant",
+              "cornerRadius": 8,
+              "padding": [
+                0,
+                12
+              ],
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "hvKhY",
+                  "name": "TitlePlaceholder",
+                  "fill": "$outline",
+                  "content": "タスクのタイトルを入力",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "5JKix",
+          "name": "DescriptionField",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 8,
+          "children": [
+            {
+              "type": "text",
+              "id": "ih82k",
+              "name": "DescriptionLabel",
+              "fill": "$onSurface",
+              "content": "説明",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "PAOAM",
+              "name": "DescriptionInput",
+              "width": "fill_container",
+              "height": 96,
+              "fill": "$surfaceVariant",
+              "cornerRadius": 8,
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "HUyfz",
+                  "name": "DescriptionPlaceholder",
+                  "fill": "$outline",
+                  "content": "タスクの説明を入力（任意）",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "bmF76",
+          "name": "DateField",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 8,
+          "children": [
+            {
+              "type": "text",
+              "id": "4rC4P",
+              "name": "DateLabel",
+              "fill": "$onSurface",
+              "content": "期限",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "huKZS",
+              "name": "DateInput",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "$surfaceVariant",
+              "cornerRadius": 8,
+              "padding": [
+                0,
+                12
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Td9ku",
+                  "name": "DateText",
+                  "fill": "$onSurface",
+                  "content": "明日",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "OHZOi",
+                  "name": "CalendarIcon",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "calendar_month",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "9l6Cp",
+          "name": "Actions",
+          "width": "fill_container",
+          "gap": 8,
+          "justifyContent": "end",
+          "children": [
+            {
+              "type": "frame",
+              "id": "h2Vfy",
+              "name": "CancelButton",
+              "width": 80,
+              "height": 40,
+              "cornerRadius": 20,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "oigTK",
+                  "name": "CancelText",
+                  "fill": "$primary",
+                  "content": "キャンセル",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ETiWX",
+              "name": "SaveButton",
+              "width": 80,
+              "height": 40,
+              "fill": "$primary",
+              "cornerRadius": 20,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "6RF1C",
+                  "name": "SaveText",
+                  "fill": "$onPrimary",
+                  "content": "保存",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "tduMb",
+      "x": 0,
+      "y": 2000,
+      "name": "All Tasks - Search No Results",
+      "theme": {
+        "mode": "light"
+      },
+      "width": 402,
+      "height": 874,
+      "fill": "$surface",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "4kogI",
+          "name": "AppBar",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#F2ECF4",
+          "padding": [
+            0,
+            16
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "PMTNT",
+              "name": "BackButton",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "hY9BI",
+                  "name": "BackIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "arrow_back",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onPrimary"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "6rg37",
+              "name": "SearchField",
+              "width": "fill_container",
+              "height": 40,
+              "fill": "$onPrimary",
+              "cornerRadius": 4,
+              "gap": 8,
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "j40UI",
+                  "name": "SearchText",
+                  "fill": "$onSurface",
+                  "content": "買い物",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "VgWCC",
+              "name": "ClearButton",
+              "width": 44,
+              "height": 44,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "49g1I",
+                  "name": "ClearIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "close",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onPrimary"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "6tOua",
+          "name": "TabBar",
+          "width": "fill_container",
+          "height": 48,
+          "fill": "$surface",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$outlineVariant"
+          },
+          "justifyContent": "space_around",
+          "children": [
+            {
+              "type": "frame",
+              "id": "iWyTX",
+              "name": "Tab_All",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Lkbrq",
+                  "name": "TabText",
+                  "fill": "$primary",
+                  "content": "すべて",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "SIzLo",
+                  "name": "Indicator",
+                  "fill": "$primary",
+                  "width": "fill_container",
+                  "height": 3
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rQlWN",
+              "name": "Tab_Today",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "mI0nh",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "今日",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vs2JS",
+              "name": "Tab_Overdue",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "VwDv9",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "期限切れ",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "QQvn9",
+              "name": "Tab_Completed",
+              "height": 48,
+              "layout": "vertical",
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "8oRWb",
+                  "name": "TabText",
+                  "fill": "$onSurfaceVariant",
+                  "content": "完了済み",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "1WIEs",
+          "name": "Content Layer",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "LQ4Vs",
+              "x": 330,
+              "y": 698,
+              "name": "FAB",
+              "width": 56,
+              "height": 56,
+              "fill": "$primaryContainer",
+              "cornerRadius": 16,
+              "effect": [
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#0000004d",
+                  "offset": {
+                    "x": 0,
+                    "y": 1
+                  },
+                  "blur": 2.625
+                },
+                {
+                  "type": "shadow",
+                  "shadowType": "outer",
+                  "color": "#00000026",
+                  "offset": {
+                    "x": 0,
+                    "y": 4
+                  },
+                  "blur": 7,
+                  "spread": 3
+                }
+              ],
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "6gsHU",
+                  "name": "FAB_Icon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "add",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onPrimaryContainer"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vIf4x",
+              "x": 0,
+              "y": 0,
+              "name": "NoResultsContent",
+              "width": 402,
+              "height": 770,
+              "fill": "$surface",
+              "layout": "vertical",
+              "gap": 24,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "wMKEX",
+                  "name": "NoResultsIcon",
+                  "width": 64,
+                  "height": 64,
+                  "iconFontName": "search_off",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "$onSurfaceVariant"
+                },
+                {
+                  "type": "frame",
+                  "id": "TpEZD",
+                  "name": "TextContainer",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "itmn2",
+                      "name": "NoResultsTitle",
+                      "fill": "$onSurface",
+                      "content": "'検索'に一致するタスクはありません",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "G0IGs",
+                      "name": "NoResultsDescription",
+                      "fill": "$onSurfaceVariant",
+                      "content": "別のキーワードで検索してください",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "themes": {
+    "mode": [
+      "light",
+      "dark"
+    ]
+  },
+  "variables": {
+    "background": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#FDF7FF",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#141218",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "error": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#BA1A1A",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#FFB4AB",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "errorContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#FFDAD6",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#93000A",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "info": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#1976D2",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#64B5F6",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "infoContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#BBDEFB",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#1565C0",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "inversePrimary": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#CFBDFE",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#65558F",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "inverseSurface": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#322F35",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#E6E0E9",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onBackground": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#1D1B20",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#E6E0E9",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onError": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#FFFFFF",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#690005",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onErrorContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#93000A",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#FFDAD6",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onInfo": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#000000",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#FFFFFF",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onInfoContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#0D47A1",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#BBDEFB",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onInverseSurface": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#F5EFF7",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#322F35",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onPrimary": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#FFFFFF",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#36275D",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onPrimaryContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#4D3D75",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#E9DDFF",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onSecondary": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#FFFFFF",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#332D41",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onSecondaryContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#4A4458",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#E8DEF8",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onSuccess": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#1B5E20",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#FFFFFF",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onSuccessContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#1B5E20",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#C8E6C9",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onSurface": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#1D1B20",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#E6E0E9",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onSurfaceVariant": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#49454E",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#CAC4CF",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onTertiary": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#FFFFFF",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#4A2532",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onTertiaryContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#633B48",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#FFD9E3",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onWarning": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#000000",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#FFFFFF",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "onWarningContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#E65100",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#FFE0B2",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "outline": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#7A757F",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#948F99",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "outlineVariant": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#CAC4CF",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#49454E",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "primary": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#65558F",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#CFBDFE",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "primaryContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#E9DDFF",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#4D3D75",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "scrim": {
+      "type": "color",
+      "value": "#000000"
+    },
+    "secondary": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#625B71",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#CBC2DB",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "secondaryContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#E8DEF8",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#4A4458",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "shadow": {
+      "type": "color",
+      "value": "#000000"
+    },
+    "success": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#4CAF50",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#81C784",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "successContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#C8E6C9",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#2E7D32",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "surface": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#FDF7FF",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#141218",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "surfaceTint": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#65558F",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#CFBDFE",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "surfaceVariant": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#E7E0EB",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#49454E",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "tertiary": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#7E5260",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#EFB8C8",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "tertiaryContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#FFD9E3",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#633B48",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "warning": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#F57C00",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#FFB74D",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    },
+    "warningContainer": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#FFE0B2",
+          "theme": {
+            "mode": "light"
+          }
+        },
+        {
+          "value": "#EF6C00",
+          "theme": {
+            "mode": "dark"
+          }
+        }
+      ]
+    }
+  }
+}
