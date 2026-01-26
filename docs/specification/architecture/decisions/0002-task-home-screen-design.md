@@ -554,10 +554,10 @@ dependencies:
 
 - [x] Plan Modeで作成したこのADRをレビュー
 - [x] 実装の承認を得る
-- [ ] ドキュメント作成（Step 0）
-  - [ ] 機能仕様書作成（`docs/specification/features/task-management-home.md`）
-  - [ ] 画面設計書作成（`docs/specification/ui-design/task-home-screen-design.md`）
-  - [ ] Pencilでのデザイン作成（`designs/task-home-screen.pen`）
+- [x] ドキュメント作成（Step 0）
+  - [x] 機能仕様書作成（`docs/specification/features/task-management-home.md`）
+  - [x] 画面設計書作成（`docs/specification/ui-design/task-home-screen-design.md`）
+  - [x] Pencilでのデザイン作成（`designs/task-home-screen.pen`）
 - [ ] フェーズ1（データ層）の実装開始
 - [ ] タスクモデルの詳細設計（フィールドの最終決定）
 - [ ] ローカルストレージの選定（SharedPreferences vs Hive）
