@@ -732,8 +732,8 @@
       "theme": {
         "mode": "light"
       },
-      "width": 402,
-      "height": 874,
+      "width": 393,
+      "height": 852,
       "fill": "$surface",
       "layout": "vertical",
       "children": [
@@ -925,8 +925,8 @@
               "x": 0,
               "y": 0,
               "name": "TaskListView",
-              "width": 402,
-              "height": 770,
+              "width": 393,
+              "height": 748,
               "fill": "$surface",
               "layout": "vertical",
               "children": [
@@ -977,8 +977,8 @@
             {
               "type": "frame",
               "id": "AUPyA",
-              "x": 330,
-              "y": 698,
+              "x": 321,
+              "y": 676,
               "name": "FAB",
               "width": 56,
               "height": 56,
@@ -1036,8 +1036,8 @@
       "theme": {
         "mode": "light"
       },
-      "width": 402,
-      "height": 874,
+      "width": 393,
+      "height": 852,
       "fill": "$surface",
       "layout": "vertical",
       "children": [
@@ -1229,8 +1229,8 @@
               "x": 0,
               "y": 0,
               "name": "TaskListView",
-              "width": 402,
-              "height": 770,
+              "width": 393,
+              "height": 748,
               "fill": "$surface",
               "layout": "vertical",
               "children": [
@@ -1262,8 +1262,8 @@
             {
               "type": "frame",
               "id": "6Rh7H",
-              "x": 330,
-              "y": 698,
+              "x": 321,
+              "y": 676,
               "name": "FAB",
               "width": 56,
               "height": 56,
@@ -1321,8 +1321,8 @@
       "theme": {
         "mode": "light"
       },
-      "width": 402,
-      "height": 874,
+      "width": 393,
+      "height": 852,
       "fill": "$surface",
       "layout": "vertical",
       "children": [
@@ -1514,8 +1514,8 @@
               "x": 0,
               "y": 0,
               "name": "TaskListView",
-              "width": 402,
-              "height": 770,
+              "width": 393,
+              "height": 748,
               "fill": "$surface",
               "layout": "vertical",
               "children": [
@@ -1547,8 +1547,8 @@
             {
               "type": "frame",
               "id": "dzq8d",
-              "x": 330,
-              "y": 698,
+              "x": 321,
+              "y": 676,
               "name": "FAB",
               "width": 56,
               "height": 56,
@@ -1606,8 +1606,8 @@
       "theme": {
         "mode": "light"
       },
-      "width": 402,
-      "height": 874,
+      "width": 393,
+      "height": 852,
       "fill": "$surface",
       "layout": "vertical",
       "children": [
@@ -1799,8 +1799,8 @@
               "x": 0,
               "y": 0,
               "name": "TaskListView",
-              "width": 402,
-              "height": 770,
+              "width": 393,
+              "height": 748,
               "fill": "$surface",
               "layout": "vertical",
               "children": [
@@ -1840,8 +1840,8 @@
             {
               "type": "frame",
               "id": "oYXPu",
-              "x": 330,
-              "y": 698,
+              "x": 321,
+              "y": 676,
               "name": "FAB",
               "width": 56,
               "height": 56,
@@ -1899,8 +1899,8 @@
       "theme": {
         "mode": "light"
       },
-      "width": 402,
-      "height": 874,
+      "width": 393,
+      "height": 852,
       "fill": "$surface",
       "layout": "vertical",
       "children": [
@@ -2092,8 +2092,8 @@
               "x": 0,
               "y": 0,
               "name": "LoadingContent",
-              "width": 402,
-              "height": 770,
+              "width": 393,
+              "height": 748,
               "fill": "$surface",
               "layout": "vertical",
               "gap": 16,
@@ -2150,8 +2150,8 @@
       "theme": {
         "mode": "light"
       },
-      "width": 402,
-      "height": 874,
+      "width": 393,
+      "height": 852,
       "fill": "$surface",
       "layout": "vertical",
       "children": [
@@ -2340,8 +2340,8 @@
             {
               "type": "frame",
               "id": "OdjMJ",
-              "x": 330,
-              "y": 698,
+              "x": 321,
+              "y": 676,
               "name": "FAB",
               "width": 56,
               "height": 56,
@@ -2392,8 +2392,8 @@
               "x": 0,
               "y": 0,
               "name": "EmptyContent",
-              "width": 402,
-              "height": 770,
+              "width": 393,
+              "height": 748,
               "fill": "$surface",
               "layout": "vertical",
               "gap": 24,
@@ -2456,8 +2456,8 @@
       "theme": {
         "mode": "light"
       },
-      "width": 402,
-      "height": 874,
+      "width": 393,
+      "height": 852,
       "fill": "$surface",
       "layout": "vertical",
       "children": [
@@ -2649,8 +2649,8 @@
               "x": 0,
               "y": 0,
               "name": "ErrorContent",
-              "width": 402,
-              "height": 770,
+              "width": 393,
+              "height": 748,
               "fill": "$surface",
               "layout": "vertical",
               "gap": 24,
@@ -2737,8 +2737,8 @@
       "theme": {
         "mode": "light"
       },
-      "width": 402,
-      "height": 874,
+      "width": 393,
+      "height": 852,
       "fill": "$surface",
       "layout": "vertical",
       "children": [
@@ -2969,8 +2969,8 @@
               "x": 0,
               "y": 0,
               "name": "TaskListView",
-              "width": 402,
-              "height": 770,
+              "width": 393,
+              "height": 748,
               "fill": "$surface",
               "layout": "vertical",
               "children": [
@@ -3004,8 +3004,8 @@
             {
               "type": "frame",
               "id": "RgYZt",
-              "x": 330,
-              "y": 698,
+              "x": 321,
+              "y": 676,
               "name": "FAB",
               "width": 56,
               "height": 56,
@@ -3333,8 +3333,8 @@
       "theme": {
         "mode": "light"
       },
-      "width": 402,
-      "height": 874,
+      "width": 393,
+      "height": 852,
       "fill": "$surface",
       "layout": "vertical",
       "children": [
@@ -3562,8 +3562,8 @@
             {
               "type": "frame",
               "id": "LQ4Vs",
-              "x": 330,
-              "y": 698,
+              "x": 321,
+              "y": 676,
               "name": "FAB",
               "width": 56,
               "height": 56,
@@ -3614,8 +3614,8 @@
               "x": 0,
               "y": 0,
               "name": "NoResultsContent",
-              "width": 402,
-              "height": 770,
+              "width": 393,
+              "height": 748,
               "fill": "$surface",
               "layout": "vertical",
               "gap": 24,
